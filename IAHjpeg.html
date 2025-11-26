@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IAH - Teste de Imagens</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+
+    body { background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d); color: #333; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; user-select: none; }
+    .hidden { display: none !important; }
+
+    .screen { background: white; padding: 30px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); width: 100%; max-width: 600px; animation: fadeIn 0.5s ease; }
+    
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    h2 { color: #b21f1f; text-align: center; margin-bottom: 20px; }
+    
+    .form-group { margin-bottom: 15px; }
+    
+    label { display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px; }
+    
+    input, select { width: 100%; padding: 10px; border: 2px solid #eee; border-radius: 8px; }
+    
+    .btn { width: 100%; padding: 12px; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 10px; background: #b21f1f; color: white; transition: 0.3s; }
+    
+    .btn:hover { background: #8f1919; }
+    
+    .quiz-image { width: 100%; height: auto; max-height: 400px; object-fit: contain; background: #f0f0f0; border-radius: 8px; margin-bottom: 15px; cursor: pointer; }
+    
+    .timer-display { text-align: right; font-size: 14px; color: #666; margin-bottom: 5px; }
+    
+    .radio-option { display: flex; align-items: center; padding: 10px; margin-bottom: 8px; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; }
+    
+    .radio-option:hover { background: #f9f9f9; }
+    
+    .radio-option input { width: auto; margin-right: 10px; }
+  </style>
+</head>
+<body>
+
+  <div id="screen-consent" class="screen">
+    <h2>Pesquisa Anônima</h2>
+    <p style="text-align:center">Você participará de um teste de percepção de imagens. Monitoraremos tempo e cliques.</p>
+    <button class="btn" onclick="goRegistration()">Começar</button>
+  </div>
+
+  <div id="screen-register" class="screen hidden">
+    <h2>Sobre Você</h2>
+    <form id="form-register">
+      <div class="form-group"><label>Idade:</label><input type="number" id="reg-idade" required min="12" max="100"></div>
+      <div class="form-group"><label>Gênero:</label>
+        <select id="reg-genero" required>
+          <option value="">Selecione...</option><option value="masculino">Masculino</option><option value="feminino">Feminino</option><option value="outro">Outro</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Escolaridade:</label>
+        <select id="reg-escolaridade" required>
+          <option value="">Selecione...</option><option value="medio">Ensino Médio</option><option value="superior">Ensino Superior</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Nível IA:</label>
+        <select id="reg-ia" required>
+          <option value="baixo">Baixo</option><option value="medio">Médio</option><option value="alto">Alto</option>
+        </select>
+      </div>
+      <button type="submit" class="btn">Gerar ID e Iniciar</button>
+    </form>
+  </div>
+
+  <div id="screen-intro" class="screen hidden">
+    <h2>Seu Código: <span id="user-code">...</span></h2>
+    <p style="text-align:center">Identifique se as imagens são REAIS ou IA.</p>
+    <button class="btn" onclick="startQuiz()">Iniciar Quiz</button>
+  </div>
+
+  <div id="screen-quiz" class="screen hidden">
+    <div class="timer-display">Tempo: <span id="timer-count">0</span>s</div>
+    
+    <img src="" id="quiz-img" class="quiz-image">
+    
+    <form id="form-quiz">
+      <p id="dynamic-question-text" style="font-weight:bold;text-align:center;margin-bottom:15px;font-size:1.1em;color:#b21f1f;">
+        Carregando pergunta...
+      </p>
+      
+      <label class="radio-option"><input type="radio" name="choice" value="ia_certeza" required> É IA (Certeza)</label>
+      <label class="radio-option"><input type="radio" name="choice" value="ia_duvida"> É IA (Dúvida)</label>
+      <label class="radio-option"><input type="radio" name="choice" value="humano_certeza"> É Humano (Certeza)</label>
+      <label class="radio-option"><input type="radio" name="choice" value="humano_duvida"> É Humano (Dúvida)</label>
+      
+      <div class="form-group" style="margin-top:10px"><label>Por quê? (Opcional)</label><input type="text" id="quiz-justificativa"></div>
+      <button type="submit" class="btn">Próxima</button>
+    </form>
+  </div>
+  
+  <div id="screen-end" class="screen hidden">
+    <h2>Obrigado!</h2>
+    <p style="text-align:center">Dados salvos.</p>
+  </div>
+
+  <script>
+    function loadQuestion() {
+      const q = state.questions[state.currentIdx];
+      
+      document.getElementById('quiz-img').src = q.url_imagem;
+      
+      // ⭐ Atualiza o texto da pergunta com o que veio do banco
+      document.getElementById('dynamic-question-text').innerText = q.texto_pergunta;
+      
+      document.getElementById('form-quiz').reset();
+      document.getElementById('quiz-justificativa').value = '';
+      
+      if(state.timerInterval) clearInterval(state.timerInterval);
+      state.startTime = Date.now();
+      document.getElementById('timer-count').innerText = "0";
+      state.timerInterval = setInterval(() => { document.getElementById('timer-count').innerText = Math.floor((Date.now()-state.startTime)/1000); }, 1000);
+      log('view_image', {id: q.item_id});
+    }
+
+    // Função RESPONDER atualizada (para salvar qual pergunta foi usada)
+    document.getElementById('form-quiz').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const time = (Date.now() - state.startTime) / 1000;
+      const formData = new FormData(e.target);
+      const q = state.questions[state.currentIdx];
+      
+      state.answers.push({
+        id: q.item_id,
+        pergunta_usada: q.texto_pergunta, // ⭐ Envia o texto para salvar
+        choice: formData.get('choice'),
+        isCorrect: formData.get('choice').startsWith(q.resposta_correta),
+        timeTaken: time,
+        justificativa: document.getElementById('quiz-justificativa').value
+      });
+
+      state.currentIdx++;
+      if (state.currentIdx < state.questions.length) loadQuestion();
+      else finishQuiz();
+    });
+    const state = { id_participante: null, questions: [], currentIdx: 0, answers: [], logs: [], startTime: 0, timerInterval: null };
+    
+    function show(id) { document.querySelectorAll('.screen').forEach(el => el.classList.add('hidden')); document.getElementById(id).classList.remove('hidden'); }
+    function goRegistration() { show('screen-register'); }
+    function log(type, details={}) { state.logs.push({ timestamp: Date.now(), event_type: type, details: {...details, q: state.currentIdx} }); }
+
+    // REGISTRO
+    document.getElementById('form-register').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = { idade: document.getElementById('reg-idade').value, genero: document.getElementById('reg-genero').value, escolaridade: document.getElementById('reg-escolaridade').value, nivel_ia: document.getElementById('reg-ia').value };
+      
+      // ATENÇÃO: Nome do arquivo atualizado aqui 👇
+      const res = await fetch('IAHjpegregistro.php', { method: 'POST', body: JSON.stringify(data) });
+      const json = await res.json();
+      
+      if (json.success) {
+        state.id_participante = json.id_participante;
+        document.getElementById('user-code').innerText = json.codigo_gerado;
+        show('screen-intro');
+      } else { alert('Erro: ' + json.error); }
+    });
+
+    // INICIAR
+    async function startQuiz() {
+      // ATENÇÃO: Nome do arquivo atualizado aqui 👇
+      const res = await fetch('IAHjpegbuscar.php');
+      state.questions = await res.json();
+      if (state.questions.length === 0) return alert('Sem imagens no banco!');
+      log('start'); show('screen-quiz'); loadQuestion();
+    }
+
+    function loadQuestion() {
+      const q = state.questions[state.currentIdx];
+      document.getElementById('quiz-img').src = q.url_imagem;
+      document.getElementById('form-quiz').reset();
+      document.getElementById('quiz-justificativa').value = '';
+      
+      if(state.timerInterval) clearInterval(state.timerInterval);
+      state.startTime = Date.now();
+      document.getElementById('timer-count').innerText = "0";
+      state.timerInterval = setInterval(() => { document.getElementById('timer-count').innerText = Math.floor((Date.now()-state.startTime)/1000); }, 1000);
+      log('view_image', {id: q.item_id});
+    }
+
+    // RESPONDER
+    document.getElementById('form-quiz').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const time = (Date.now() - state.startTime) / 1000;
+      const formData = new FormData(e.target);
+      const q = state.questions[state.currentIdx];
+      
+      state.answers.push({
+        id: q.item_id,
+        choice: formData.get('choice'),
+        isCorrect: formData.get('choice').startsWith(q.resposta_correta),
+        timeTaken: time,
+        justificativa: document.getElementById('quiz-justificativa').value
+      });
+
+      state.currentIdx++;
+      if (state.currentIdx < state.questions.length) loadQuestion();
+      else finishQuiz();
+    });
+
+    async function finishQuiz() {
+      show('screen-end');
+      // ATENÇÃO: Nome do arquivo atualizado aqui 👇
+      await fetch('IAHjpegsalvar.php', { method: 'POST', body: JSON.stringify({ id_participante: state.id_participante, respostas: state.answers, logs: state.logs }) });
+    }
+    
+    // Logs Extras
+    document.addEventListener("visibilitychange", () => log(document.visibilityState));
+    document.addEventListener("click", (e) => { if(!e.target.closest('button')) log('click', {x:e.clientX, y:e.clientY}); });
+  </script>
+</body>
+</html>
