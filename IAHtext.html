@@ -6,11 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IAH - Quiz de Texto</title>
   <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Roboto+Mono:wght@400&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Roboto+Mono:wght@400;500&display=swap"
     rel="stylesheet">
 
   <style>
-    /* --- TEMA ORIGINAL (CSS Antigo) --- */
+    /* --- TEMA "DEEP FREEZE" (Azul Profundo e Ciano) --- */
 
     * {
       box-sizing: border-box;
@@ -20,8 +20,8 @@
     }
 
     body {
-      background: #134E5E;
-      /* Azul/Verde escuro sólido */
+      /* Gradiente Azul Profundo */
+      background: linear-gradient(135deg, #02111D 0%, #004e92 100%);
       color: #e0f7fa;
       min-height: 100vh;
       display: flex;
@@ -37,32 +37,32 @@
 
     .screen {
       background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(5px);
+      backdrop-filter: blur(10px);
       padding: 30px;
-      border-radius: 12px;
+      border-radius: 16px;
       width: 100%;
       max-width: 950px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
-      border: 1px solid #333;
+      border: 1px solid rgba(255, 255, 255, 0.1);
       animation: fadeIn 0.5s ease;
     }
 
     @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
+    h2 {
+      color: #00cc99; /* Ciano-Esmeralda */
+      text-align: center;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    /* Botões */
     .btn {
-      background: #00cc99;
-      /* Ciano-Esmeralda */
-      color: #1e1e1e;
+      background: linear-gradient(90deg, #00c6ff, #0072ff);
+      color: white;
       padding: 12px 25px;
       border: none;
       border-radius: 5px;
@@ -71,32 +71,38 @@
       text-transform: uppercase;
       margin-top: 25px;
       transition: 0.2s;
+      width: 100%;
+      box-shadow: 0 4px 15px rgba(0, 198, 255, 0.3);
     }
 
     .btn:hover {
-      background: #00e6a8;
       transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(0, 204, 153, 0.4);
+      box-shadow: 0 6px 20px rgba(0, 198, 255, 0.5);
     }
 
-    /* Novo estilo para inputs e selects */
+    /* Inputs e Selects */
     .screen input[type="number"],
     .screen select {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       margin-bottom: 15px;
-      border: 1px solid #444;
+      border: 1px solid #2c3e50;
       border-radius: 4px;
       background-color: rgba(0, 0, 0, 0.4);
       color: #e0f7fa;
       font-size: 16px;
+    }
+    
+    .screen input:focus, .screen select:focus {
+        outline: none;
+        border-color: #00cc99;
     }
 
     .screen label {
       display: block;
       margin-bottom: 5px;
       font-weight: 600;
-      color: #fff;
+      color: #4facfe;
     }
 
     .timer {
@@ -111,27 +117,36 @@
       font-weight: 600;
     }
 
-    /* --- ESTILOS DO CONTEÚDO --- */
-
-    #quiz-conteudo-wrapper {
-      background: rgba(0, 0, 0, 0.2);
-      padding: 20px;
-      border-radius: 8px;
-      border: 1px solid #333;
-      max-height: 400px;
-      overflow-y: auto;
-      margin-top: 20px;
+    /* --- CONTEÚDO DO TEXTO --- */
+    .media-container {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+    
+    .dual {
+        flex-direction: row;
     }
 
-    #quiz-conteudo {
-      white-space: pre-wrap;
+    .text-card {
+      background: #f0f8ff; /* Papel claro para leitura */
+      color: #1a2a3a;
+      padding: 20px;
+      border-left: 5px solid #00c6ff;
+      border-radius: 5px;
       font-family: 'Roboto Mono', monospace;
       font-size: 15px;
       line-height: 1.6;
+      max-height: 400px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
     }
+    
+    .dual .text-card { width: 50%; font-size: 13px; }
 
-    /* --- NOVOS ESTILOS ESSENCIAIS PARA O LAYOUT (MANTIDOS) --- */
-
+    /* --- CONTROLES DO QUIZ --- */
     .quiz-controls {
       display: flex;
       gap: 20px;
@@ -142,24 +157,22 @@
 
     .control-box {
       flex: 1;
-      min-width: 300px;
+      min-width: 55px;
       padding: 15px;
       border-radius: 8px;
       background: rgba(0, 0, 0, 0.3);
-      /* Fundo semi-transparente simples */
-      border: 1px solid #333;
+      border: 1px solid #2c3e50;
     }
 
     .control-box h4 {
-      margin-bottom: 15px;
+      margin-bottom: 7px;
       color: #00cc99;
       font-weight: 600;
-      border-bottom: 1px solid #333;
-      padding-bottom: 8px;
+      border-bottom: 1px solid #2c3e50;
+      padding-bottom: 5px;
     }
 
-    /* --- DECISÃO PRINCIPAL (Radio Buttons) --- */
-
+    /* Radio Buttons (Decisão) */
     .radio-group {
       display: flex;
       gap: 15px;
@@ -171,32 +184,31 @@
       align-items: center;
       justify-content: space-between;
       padding: 12px;
-      border: 2px solid #555;
+      border: 2px solid #2c3e50;
       border-radius: 6px;
       cursor: pointer;
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(255, 255, 255, 0.05);
       transition: 0.2s ease;
     }
 
     .radio-option:hover {
-      border-color: #00cc99;
+      border-color: #00c6ff;
+      background: rgba(0, 198, 255, 0.1);
     }
 
     .radio-option input {
       margin: 0;
-      accent-color: #00cc99;
+      accent-color: #00c6ff;
       transform: scale(1.2);
     }
 
     .radio-option:has(input:checked) {
-      border-color: #00cc99;
-      background: rgba(0, 204, 153, 0.1);
+      border-color: #00c6ff;
+      background: rgba(0, 198, 255, 0.2);
     }
 
-    /* --- NÍVEL DE CERTEZA (Escala de Confiança) --- */
-    .confidence-wrapper {
-      margin-top: 10px;
-    }
+    /* --- BOLINHAS DE CONFIANÇA (AZUL) --- */
+    .confidence-wrapper { margin-top: 10px; }
 
     .scale-container {
       display: flex;
@@ -215,19 +227,13 @@
       margin-top: 3px;
     }
 
-    .scale-btn {
-      display: block;
-      cursor: pointer;
-    }
-
-    .scale-btn input {
-      display: none;
-    }
+    .scale-btn { display: block; cursor: pointer; }
+    .scale-btn input { display: none; }
 
     .scale-btn .circle {
       width: 35px;
       height: 35px;
-      border: 2px solid #555;
+      border: 2px solid #2c3e50;
       border-radius: 50%;
       background: rgba(0, 0, 0, 0.3);
       transition: 0.2s;
@@ -235,174 +241,99 @@
       align-items: center;
       justify-content: center;
       font-weight: 600;
+      color: #e0f7fa;
     }
 
     .scale-btn input:checked+.circle {
-      background-color: #00cc99;
-      border-color: #00cc99;
-      color: #1e1e1e;
+      background-color: #00c6ff;
+      border-color: #00c6ff;
+      color: #000;
       transform: scale(1.1);
+      box-shadow: 0 0 10px rgba(0, 198, 255, 0.5);
     }
 
-    /* --- JUSTIFICATIVA --- */
-
-    #justificativa-wrapper {
-      margin-top: 20px;
-    }
-
-    #justificativa-wrapper label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 600;
-      color: #fff;
-    }
-
+    /* Justificativa */
+    #justificativa-wrapper { margin-top: 20px; }
     #quiz-justificativa {
       width: 100%;
-      height: 100px;
+      height: 80px;
       padding: 15px;
-      border: 1px solid #444;
+      border: 1px solid #2c3e50;
       border-radius: 6px;
       background-color: rgba(0, 0, 0, 0.4);
       color: #e0f7fa;
-      font-size: 15px;
+      font-size: 14px;
       resize: vertical;
-      transition: border-color 0.2s;
     }
 
-    #quiz-justificativa:focus {
-      border-color: #00cc99;
-      outline: none;
-    }
-
-
-    /* --- ESTILOS PARA O GABARITO (MANTIDOS) --- */
-
-    .answer-key-content {
-      margin-top: 25px;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
+    /* Gabarito */
     .answer-item {
       padding: 15px;
       border-radius: 8px;
       border-left: 5px solid;
-      transition: 0.3s;
+      margin-bottom: 15px;
       background: rgba(0, 0, 0, 0.2);
     }
-
-    .answer-item.correct {
-      border-left-color: #00cc99;
-    }
-
-    .answer-item.incorrect {
-      border-left-color: #ff4d4d;
-    }
-
+    .answer-item.correct { border-left-color: #00cc99; }
+    .answer-item.incorrect { border-left-color: #ff4d4d; }
     .text-preview {
-      font-size: 14px;
-      margin: 10px 0;
-      padding-left: 10px;
-      border-left: 2px solid #555;
-      color: #ccc;
-      font-style: italic;
-      max-height: 120px;
-      overflow: hidden;
+        font-family: 'Roboto Mono', monospace;
+        font-size: 12px;
+        color: #ccc;
+        background: rgba(0,0,0,0.3);
+        padding: 10px;
+        margin: 10px 0;
     }
-
-    .header-result {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .header-result span {
-      font-weight: bold;
-      padding: 4px 10px;
-      border-radius: 4px;
-      font-size: 13px;
-      color: #1e1e1e;
-    }
-
-    .header-result .correct {
-      background-color: #00cc99;
-    }
-
-    .header-result .incorrect {
-      background-color: #ff4d4d;
-    }
-
-    .correct-answer {
-      font-weight: bold;
-      color: #00cc99;
-    }
-
     .summary-results {
-      margin-top: 20px;
-      padding: 15px;
-      background: rgba(0, 0, 0, 0.4);
-      border-radius: 6px;
-      font-weight: 600;
-      text-align: center;
-      font-size: 1.1em;
+        background: rgba(0,0,0,0.3);
+        padding: 15px;
+        border-radius: 8px;
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 1.2em;
+        color: #00c6ff;
     }
 
-
-    /* --- Responsividade (Mantida) --- */
-
+    /* Responsivo */
     @media (max-width: 768px) {
-      .quiz-controls {
-        flex-direction: column;
-        gap: 15px;
-      }
-
-      .control-box {
-        min-width: 100%;
-      }
+      .quiz-controls { flex-direction: column; }
+      .dual { flex-direction: column; }
+      .dual .text-card { width: 100%; }
     }
-    /* Adicione isso ao seu bloco <style> no IAHtext.html */
-/* Estilo para o campo de consentimento */
-.consent-wrapper {
-    margin-top: 20px;
-    padding: 15px;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 6px;
-    border: 1px solid #444;
-}
-.consent-label {
-    display: flex;
-    align-items: center;
-    font-size: 14px;
-    color: #fff;
-    font-weight: 400;
-    cursor: pointer;
-}
-.consent-label input[type="checkbox"] {
-    margin-right: 10px;
-    transform: scale(1.2);
-    accent-color: #00cc99; /* Cor do checkbox */
-}
+    
+    /* Consentimento checkbox */
+    .consent-wrapper {
+        margin-top: 20px;
+        padding: 15px;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 6px;
+        border: 1px solid #2c3e50;
+    }
+    .consent-label {
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        color: #fff;
+        cursor: pointer;
+    }
+    .consent-label input[type="checkbox"] {
+        width: auto;
+        margin-right: 10px;
+        transform: scale(1.2);
+        accent-color: #00cc99;
+    }
   </style>
 </head>
 
 <body>
 
-  <div class="consent-wrapper">
-    <label class="consent-label">
-        <input type="checkbox" name="consentimento" value="sim" required>
-        Declaro que li e concordo com os **Termos de Consentimento Livre e Esclarecido**.
-    </label>
-</div>
-
   <div id="screen-start" class="screen">
-    <h2>Bem-vindo(a) ao IAH - Quiz de Texto</h2>
-    <p>Preencha os dados para iniciar o questionário.</p>
+    <h2>IAH - Análise Textual</h2>
+    <p style="text-align:center; color:#aaa;">Preencha os dados para iniciar.</p>
 
     <form id="form-start">
       <label for="idade">Idade:</label>
-      <input type="number" id="idade" name="idade" required min="18" max="99">
+      <input type="number" id="idade" name="idade" required min="12" max="85">
   
       <label for="genero">Gênero:</label>
       <select id="genero" name="genero" required>
@@ -417,21 +348,23 @@
           <option value="">Selecione</option>
           <option value="Fundamental">Fundamental</option>
           <option value="Medio_Incompleto">Médio (Incompleto)</option>
-          <option value="Medio_Completo">Médio/Técnico (Completo)</option>
+          <option value="Medio_Completo">Médio (Completo)</option>
+          <option value="MedioTecnico">Médio/Técnico</option>
           <option value="Superior">Superior</option>
           <option value="Pos_Graduacao">Pós-Graduação</option>
       </select>
       
       <div id="tecnico-field-wrapper" class="hidden">
-          <label for="curso_tecnico">Qual curso técnico você fez?</label>
+          <label style="color:#00c6ff;">Qual curso técnico?</label>
           <select id="curso_tecnico" name="curso_tecnico">
               <option value="">Selecione</option>
-              <option value="Informatica">Técnico em Informática</option>
-              <option value="Agricultura">Técnico em Agricultura</option>
-              <option value="Nao_Fez_Tecnico">Não fiz técnico / Outro curso</option>
+              <option value="Informatica">Informática</option>
+              <option value="Agricultura">Agricultura</option>
+              <option value="Outro">Outro</option>
           </select>
       </div>
-      <label for="nivel_ia">Nível de conhecimento sobre IA:</label>
+
+      <label for="nivel_ia">Conhecimento sobre IA:</label>
       <select id="nivel_ia" name="nivel_ia" required>
           <option value="">Selecione</option>
           <option value="Nulo">Nulo</option>
@@ -440,10 +373,10 @@
           <option value="Avancado">Avançado</option>
       </select>
   
-      <div style="margin-top: 20px;">
-          <label style="display: flex; align-items: center; font-size: 14px;">
-              <input type="checkbox" name="consentimento" value="sim" required style="margin-right: 10px; transform: scale(1.2);">
-              Declaro que li e concordo com os <span></span>.
+      <div class="consent-wrapper">
+          <label class="consent-label">
+              <input type="checkbox" name="consentimento" value="sim" required>
+              Declaro que li e concordo com os Termos de Consentimento.
           </label>
       </div>
       <button class="btn" type="submit">Iniciar Quiz</button>
@@ -451,54 +384,35 @@
     <div id="loading-start" class="hidden" style="text-align: center; margin-top: 20px;">Carregando...</div>
   </div>
 
-
   <div id="screen-quiz" class="screen hidden">
     <p class="timer">Tempo: <span id="quiz-timer">00:00</span></p>
 
     <form id="form-quiz">
       <h3 id="quiz-pergunta" style="color:#00cc99;"></h3>
 
-      <div id="quiz-conteudo-wrapper">
-        <pre id="quiz-conteudo"></pre>
-      </div>
+      <div id="media-wrapper" class="media-container"></div>
 
       <div class="quiz-controls">
 
         <div id="quiz-decision-wrapper" class="control-box decision-box">
-          <h4>1. Decisão: Autor Humano ou IA?</h4>
-          <div class="radio-group">
-          </div>
+          <h4>Resposta:</h4>
+          <div class="radio-group" id="decision-options">
+             </div>
         </div>
 
         <div class="control-box confidence-box">
-          <h4>2. Nível de Certeza</h4>
+          <h4>Nível de Confiabilidade</h4>
           <div class="confidence-wrapper">
             <div class="scale-container">
-              <label class="scale-btn">
-                <input type="radio" name="confidence" value="1" required>
-                <span class="circle">1</span>
-                <span class="scale-label">Chute</span>
-              </label>
-              <label class="scale-btn">
-                <input type="radio" name="confidence" value="2">
-                <span class="circle">2</span>
-                <span class="scale-label">Dúvida</span>
-              </label>
-              <label class="scale-btn">
-                <input type="radio" name="confidence" value="3">
-                <span class="circle">3</span>
-                <span class="scale-label">Neutro</span>
-              </label>
-              <label class="scale-btn">
-                <input type="radio" name="confidence" value="4">
-                <span class="circle">4</span>
-                <span class="scale-label">Certeza</span>
-              </label>
-              <label class="scale-btn">
-                <input type="radio" name="confidence" value="5">
-                <span class="circle">5</span>
-                <span class="scale-label">Absoluta</span>
-              </label>
+                <span class="scale-label">Zero confiança</span>
+                <div style="display:flex; gap:8px;">
+                  <label class="scale-btn"><input type="radio" name="confidence" value="1" required><span class="circle">1</span></label>
+                  <label class="scale-btn"><input type="radio" name="confidence" value="2"><span class="circle">2</span></label>
+                  <label class="scale-btn"><input type="radio" name="confidence" value="3"><span class="circle">3</span></label>
+                  <label class="scale-btn"><input type="radio" name="confidence" value="4"><span class="circle">4</span></label>
+                  <label class="scale-btn"><input type="radio" name="confidence" value="5"><span class="circle">5</span></label>
+                </div>
+                <span class="scale-label">Confiança Alta</span>
             </div>
           </div>
         </div>
@@ -506,36 +420,27 @@
 
       <div id="justificativa-wrapper">
         <label for="quiz-justificativa">3. Justificativa (Opcional)</label>
-        <textarea id="quiz-justificativa" name="justificativa"
-          placeholder="O que te levou a esta conclusão?"></textarea>
+        <textarea id="quiz-justificativa" name="justificativa" placeholder="O que denunciou a autoria?"></textarea>
       </div>
 
       <button class="btn" type="submit">Próximo</button>
     </form>
   </div>
 
-
   <div id="screen-answer-key" class="screen hidden">
-    <h2 style="text-align: center;">🔑 Gabarito do Quiz</h2>
-    <p style="text-align: center;">Obrigado por participar! Veja como você se saiu e a autoria real de cada texto.</p>
-
-    <div class="summary-results">
+    <h2>Gabarito Final</h2>
+    <div class="summary-results"></div>
+    <div id="answer-key-content">
+      <p style="text-align:center">Carregando resultados...</p>
     </div>
-
-    <div id="answer-key-content" class="answer-key-content">
-      <p class="loading-message">Carregando gabarito...</p>
-    </div>
-
-    <button class="btn" onclick="goToStart()">Voltar ao Início</button>
+    <button class="btn" onclick="location.reload()">Novo Teste</button>
   </div>
-
 
   <div id="screen-error" class="screen hidden">
-    <h2>Ops! Algo deu errado.</h2>
-    <p id="error-message">Houve um erro no carregamento das perguntas ou no registro.</p>
-    <button class="btn" onclick="goToStart()">Tentar Novamente</button>
+    <h2>Ops!</h2>
+    <p id="error-message">Erro no sistema.</p>
+    <button class="btn" onclick="location.reload()">Tentar Novamente</button>
   </div>
-
 
   <script>
     const state = {
@@ -550,78 +455,51 @@
       timerInterval: null
     };
 
-    // Função auxiliar para mudar de tela
     function show(screenId) {
       document.querySelectorAll('.screen').forEach(el => el.classList.add('hidden'));
       document.getElementById(screenId).classList.remove('hidden');
     }
 
-    // Função para registrar eventos
     function log(type, details = {}) {
       state.logs.push({
         timestamp: Date.now(),
-        type: type,
-        details: JSON.stringify(details)
+        event_type: type,
+        details: details 
       });
     }
 
-    // Função para voltar ao início
-    function goToStart() {
-      window.location.reload();
-    }
-
-    // ==============================================
-    // NOVO: LÓGICA DE EXIBIÇÃO CONDICIONAL
-    // ==============================================
+    // --- Lógica Condicional (Curso Técnico) ---
     document.addEventListener("DOMContentLoaded", () => {
       const escolaridadeSelect = document.getElementById('escolaridade');
       const tecnicoWrapper = document.getElementById('tecnico-field-wrapper');
       const cursoTecnicoSelect = document.getElementById('curso_tecnico');
 
-      function toggleTecnicoField() {
-        const value = escolaridadeSelect.value;
-        // Verifica se a opção é "Médio (Incompleto)" ou "Médio/Técnico (Completo)"
-        if (value === 'Medio_Incompleto' || value === 'Medio_Completo') {
+      escolaridadeSelect.addEventListener('change', function() {
+        if (this.value === 'MedioTecnico') {
           tecnicoWrapper.classList.remove('hidden');
           cursoTecnicoSelect.setAttribute('required', 'required');
         } else {
           tecnicoWrapper.classList.add('hidden');
           cursoTecnicoSelect.removeAttribute('required');
-          cursoTecnicoSelect.value = ""; // Limpa a seleção para não enviar dados inválidos
+          cursoTecnicoSelect.value = "";
         }
-      }
-
-      // Adiciona o listener para o evento de mudança
-      escolaridadeSelect.addEventListener('change', toggleTecnicoField);
-
-      // Chama a função na inicialização para garantir o estado correto (oculto)
-      toggleTecnicoField();
-
+      });
+      
       show('screen-start');
       log('app_start');
     });
 
-
-    // ==============================================
-    // 1. LÓGICA DE REGISTRO
-    // ==============================================
-
+    // 1. REGISTRO
     document.getElementById('form-start').addEventListener('submit', async (e) => {
       e.preventDefault();
       document.getElementById('loading-start').classList.remove('hidden');
-
       const formData = new FormData(e.target);
       const data = Object.fromEntries(formData.entries());
 
-      log('register_attempt', data);
-
       try {
-        // Envia todos os dados, inclusive 'curso_tecnico' (se preenchido, será incluído no objeto 'data')
         const response = await fetch('IAHtextregistro.php', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data)
         });
         const result = await response.json();
@@ -629,287 +507,199 @@
         if (result.success) {
           state.id_participante = result.id_participante;
           state.codigo_gerado = result.codigo_gerado;
-          log('register_success', {
-            pid: state.id_participante
-          });
+          log('register_success', { pid: state.id_participante });
           loadQuestions();
         } else {
-          document.getElementById('error-message').innerText = `Erro no Registro: ${result.error || 'Erro desconhecido.'}`;
-          show('screen-error');
+          alert('Erro no registro: ' + result.error);
+          document.getElementById('loading-start').classList.add('hidden');
         }
       } catch (error) {
-        log('register_fail', {
-          error: error.message
-        });
-        document.getElementById('error-message').innerText = 'Erro de conexão ao registrar participante.';
-        show('screen-error');
+        alert('Erro de conexão.');
+        document.getElementById('loading-start').classList.add('hidden');
       }
     });
 
-    // ==============================================
-    // 2. LÓGICA DO QUIZ
-    // ==============================================
-
+    // 2. BUSCA PERGUNTAS
     async function loadQuestions() {
       try {
         const response = await fetch('IAHtextbuscar.php');
         const data = await response.json();
 
-        if (data.success && data.perguntas.length > 0) {
-          state.questions = data.perguntas;
+        if (data.length > 0) { // O PHP retorna array direto
+          state.questions = data;
           state.currentIdx = 0;
-          log('questions_loaded', {
-            count: data.perguntas.length
-          });
-          loadQuestion();
           show('screen-quiz');
+          renderQuestion();
         } else {
-          document.getElementById('error-message').innerText = 'Nenhuma pergunta carregada.';
-          show('screen-error');
+          throw new Error('Nenhuma pergunta recebida.');
         }
       } catch (error) {
-        log('load_questions_fail', {
-          error: error.message
-        });
-        document.getElementById('error-message').innerText = 'Erro ao buscar perguntas.';
+        document.getElementById('error-message').innerText = error.message;
         show('screen-error');
       }
     }
 
-    function loadQuestion() {
+    // 3. RENDERIZA PERGUNTA
+    function renderQuestion() {
       const q = state.questions[state.currentIdx];
-      const form = document.getElementById('form-quiz');
-      const decisionWrapper = document.querySelector('.radio-group');
-      const contentWrapper = document.getElementById('quiz-conteudo-wrapper');
-      const contentPre = document.getElementById('quiz-conteudo');
-      const justificativa = document.getElementById('quiz-justificativa');
-
-      // Limpa inputs
-      form.reset();
-      justificativa.value = '';
-
-      // Título da Pergunta
-      document.getElementById('quiz-pergunta').innerText = `Pergunta ${state.currentIdx + 1}/${state.questions.length}: ${q.texto}`;
-
-      // Conteúdo (Texto A ou A/B)
-      contentPre.innerText = q.conteudos.join('\n\n---\n\n');
-
-      // Opções de Decisão
-      decisionWrapper.innerHTML = ''; // Limpa as opções
-      const options = ['humano', 'ia'];
-
-      // Se for modo comparativo, adiciona opções para Texto A e Texto B
-      if (q.modo === 'comparativo') {
-        options.push('texto_a', 'texto_b');
-      }
-
-      options.forEach(val => {
-        // Ignora opções irrelevantes para modos específicos (ex: 'analise' ou 'aberta' não precisam de decisão Humano/IA)
-        if (q.modo === 'analise' || q.modo === 'aberta') return;
-
-        let labelText = val.toUpperCase();
-        if (val === 'humano') labelText = 'Autor Humano';
-        if (val === 'ia') labelText = 'Inteligência Artificial';
-        if (val === 'texto_a') labelText = 'Texto A';
-        if (val === 'texto_b') labelText = 'Texto B';
-
-        // O valor enviado no final é o mesmo do valor do radio
-        let radioValue = val;
-
-        // Cria o HTML da opção de rádio
-        const label = document.createElement('label');
-        label.className = 'radio-option';
-        label.innerHTML = `
-            ${labelText}
-            <input type="radio" name="main_decision" value="${radioValue}" required>
-        `;
-        decisionWrapper.appendChild(label);
+      
+      // Texto da Pergunta
+      document.getElementById('quiz-pergunta').innerText = `Pergunta ${state.currentIdx + 1}: ${q.texto}`;
+      
+      // Renderiza os Textos (Conteúdo)
+      const mediaDiv = document.getElementById('media-wrapper');
+      mediaDiv.className = (q.modo === 'comparativo') ? 'media-container dual' : 'media-container';
+      mediaDiv.innerHTML = '';
+      
+      q.conteudos.forEach(texto => {
+          const card = document.createElement('div');
+          card.className = 'text-card';
+          card.innerText = texto;
+          card.onmouseup = () => { if(window.getSelection().toString().length>0) log('text_select'); }; // Espião
+          mediaDiv.appendChild(card);
       });
 
-      // Lógica para modos específicos (Análise/Aberta)
-      const decisionBox = document.querySelector('.decision-box');
-      const confidenceBox = document.querySelector('.confidence-box');
+      // Renderiza Opções de Decisão
+      const decisionWrapper = document.getElementById('decision-options');
+      decisionWrapper.innerHTML = '';
+      let optionsHTML = '';
 
-      if (q.modo === 'aberta' || q.modo === 'analise') {
-        decisionBox.classList.add('hidden');
-        confidenceBox.classList.add('hidden');
-        justificativa.setAttribute('required', 'true');
-        document.querySelector('#justificativa-wrapper label').innerText = '3. Análise (Obrigatório)';
-      } else {
-        decisionBox.classList.remove('hidden');
-        confidenceBox.classList.remove('hidden');
-        justificativa.removeAttribute('required');
-        document.querySelector('#justificativa-wrapper label').innerText = '3. Justificativa (Opcional)';
+      if (q.modo === 'padrao') {
+          optionsHTML = `
+            <label class="radio-option">É IA <input type="radio" name="main_decision" value="ia" required></label>
+            <label class="radio-option">É Humano <input type="radio" name="main_decision" value="humano"></label>
+          `;
+      } else if (q.modo === 'comparativo') {
+          optionsHTML = `
+            <label class="radio-option">Texto A é IA <input type="radio" name="main_decision" value="texto_a" required></label>
+            <label class="radio-option">Texto B é IA <input type="radio" name="main_decision" value="texto_b"></label>
+          `;
+      } else if (q.modo === 'analise') {
+          optionsHTML = `
+            <label class="radio-option">Concordo <input type="radio" name="main_decision" value="concordo" required></label>
+            <label class="radio-option">Discordo <input type="radio" name="main_decision" value="discordo"></label>
+          `;
+      } else if (q.modo === 'aberta') {
+          // Esconde decisão e confiança, mostra só justificativa obrigatória
+          document.querySelector('.decision-box').classList.add('hidden');
+          document.querySelector('.confidence-box').classList.add('hidden');
+          document.getElementById('quiz-justificativa').required = true;
+          optionsHTML = `<input type="hidden" name="main_decision" value="texto_livre">`;
       }
 
+      if (q.modo !== 'aberta') {
+          document.querySelector('.decision-box').classList.remove('hidden');
+          document.querySelector('.confidence-box').classList.remove('hidden');
+          document.getElementById('quiz-justificativa').required = false;
+      }
 
-      // Lógica do Timer
-      if (state.timerInterval) clearInterval(state.timerInterval);
+      decisionWrapper.innerHTML = optionsHTML;
+
+      // Timer Reset
+      if(state.timerInterval) clearInterval(state.timerInterval);
       state.startTime = Date.now();
       document.getElementById('quiz-timer').innerText = '00:00';
       state.timerInterval = setInterval(() => {
-        const timeElapsed = Math.floor((Date.now() - state.startTime) / 1000);
-        const minutes = String(Math.floor(timeElapsed / 60)).padStart(2, '0');
-        const seconds = String(timeElapsed % 60).padStart(2, '0');
-        document.getElementById('quiz-timer').innerText = `${minutes}:${seconds}`;
+        const elapsed = Math.floor((Date.now() - state.startTime) / 1000);
+        const min = String(Math.floor(elapsed/60)).padStart(2,'0');
+        const sec = String(elapsed%60).padStart(2,'0');
+        document.getElementById('quiz-timer').innerText = `${min}:${sec}`;
       }, 1000);
 
-      log('view_q', {
-        mode: q.modo
-      });
+      log('view_question', { id: q.item_id, modo: q.modo });
     }
 
-    // Envio do Formulário do Quiz
+    // 4. ENVIO DA RESPOSTA
     document.getElementById('form-quiz').addEventListener('submit', (e) => {
       e.preventDefault();
       const fd = new FormData(e.target);
-
       const q = state.questions[state.currentIdx];
-      const main = fd.get('main_decision') || (q.modo === 'aberta' || q.modo === 'analise' ? q.gabarito : null);
+      
+      const main = fd.get('main_decision');
       const conf = fd.get('confidence') || 0;
+      
+      // Cria a string composta para o banco
+      const finalChoice = (q.modo === 'aberta') ? 'texto_livre' : `${main}_confianca_${conf}`;
 
-      let finalC;
-      if (q.modo === 'aberta' || q.modo === 'analise') {
-        finalC = 'texto_livre';
-      } else {
-        finalC = `${main}_confianca_${conf}`;
-      }
-
+      // Correção local (simplificada)
       let isCorrect = false;
+      if (q.modo === 'padrao') isCorrect = (main === q.gabarito);
+      else if (q.modo === 'comparativo') isCorrect = (main === q.gabarito);
+      else isCorrect = true; // Aberta/Analise conta como acerto pela participação
 
-      // Lógica de acerto
-      if (q.modo === 'padrao' || q.modo === 'comparativo') {
-        // No modo comparativo, 'texto_a' ou 'texto_b' é a escolha, e o gabarito é o valor real ('ia' ou 'humano'). 
-        // A lógica de gabarito para comparativo é: (main === q.gabarito).
-        isCorrect = (main === q.gabarito);
-      } else if (q.modo === 'analise' || q.modo === 'aberta') {
-        // Analise/Aberta não têm acerto/erro, mas são considerados 'corretos' para seguir o fluxo
-        isCorrect = true;
-      }
+      if(isCorrect) state.score++;
 
-      if (isCorrect) state.score++;
-
-      clearInterval(state.timerInterval);
-
-      // Salva a resposta
       state.answers.push({
         id: q.item_id,
         pergunta: q.texto,
-        choice: finalC,
-        isCorrect,
+        choice: finalChoice,
+        isCorrect: isCorrect,
         timeTaken: (Date.now() - state.startTime) / 1000,
         justificativa: document.getElementById('quiz-justificativa').value
       });
 
       state.currentIdx++;
-      if (state.currentIdx < state.questions.length) loadQuestion();
-      else finishQuiz();
+      if (state.currentIdx < state.questions.length) {
+        renderQuestion();
+      } else {
+        finishQuiz();
+      }
     });
 
-    // ==============================================
-    // 3. LÓGICA DE FINALIZAÇÃO E GABARITO
-    // ==============================================
-
+    // 5. FINALIZAR
     async function finishQuiz() {
-      // 1. Salva as respostas
-      log('quiz_finished', {
-        score: state.score
-      });
-      await fetch('IAHtextsalvar.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          id_participante: state.id_participante,
-          respostas: state.answers,
-          logs: state.logs
-        })
-      });
-
-      // 2. Chama a tela de gabarito
-      showAnswerKeyScreen();
-    }
-
-    function showAnswerKeyScreen() {
+      clearInterval(state.timerInterval);
       show('screen-answer-key');
-      loadAnswerKey(state.id_participante);
-    }
+      
+      // Renderiza resumo inicial
+      const summary = document.querySelector('.summary-results');
+      summary.innerHTML = `<p>Pontuação: <strong>${state.score}</strong> de ${state.questions.length}</p>`;
+      
+      const content = document.getElementById('answer-key-content');
+      
+      // Monta gabarito visual
+      let html = '';
+      state.answers.forEach((ans, i) => {
+          const status = ans.isCorrect ? 'ACERTOU' : 'ERROU';
+          const colorClass = ans.isCorrect ? 'correct' : 'incorrect';
+          const qReal = state.questions.find(q => q.item_id == ans.id); // Tenta achar dados originais
+          
+          html += `
+            <div class="answer-item ${colorClass}">
+                <div class="header-result">
+                    <h4>Pergunta ${i+1}</h4>
+                    <span style="font-weight:bold;">${status}</span>
+                </div>
+                <p style="font-size:12px; margin-top:5px;">Sua escolha: <strong>${ans.choice}</strong></p>
+                <p style="font-size:12px;">Tempo: ${ans.timeTaken.toFixed(1)}s</p>
+            </div>
+          `;
+      });
+      content.innerHTML = html;
 
-    async function loadAnswerKey(pid) {
-      const answerKeyContent = document.getElementById('answer-key-content');
-      answerKeyContent.innerHTML = '<p class="loading-message">Carregando gabarito...</p>';
-
-      // Chamada REAL à nova API PHP
+      // Salva no Banco
       try {
-        const response = await fetch(`IAHtextgabarito.php?pid=${pid}`);
-        const data = await response.json();
-
-        if (data.success && data.gabarito.length > 0) {
-          renderAnswerKey(data.gabarito);
-        } else {
-          answerKeyContent.innerHTML = '<p class="error-message">Não foi possível carregar o gabarito. ' + (data.error || 'Erro desconhecido.') + '</p>';
-        }
-
-      } catch (e) {
-        console.error("Erro ao buscar gabarito:", e);
-        answerKeyContent.innerHTML = '<p class="error-message">Erro de conexão ao buscar o gabarito.</p>';
+        await fetch('IAHtextsalvar.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id_participante: state.id_participante,
+            respostas: state.answers,
+            logs: state.logs
+          })
+        });
+        log('quiz_saved');
+      } catch (err) {
+        console.error("Erro ao salvar:", err);
+        alert("Erro ao salvar resultados no servidor, mas seu gabarito está na tela.");
       }
     }
 
-    function renderAnswerKey(data) {
-      const answerKeyContent = document.getElementById('answer-key-content');
-      const summaryResults = document.querySelector('.summary-results');
-      let html = '';
-      let correctCount = 0;
-
-      data.forEach((item, index) => {
-        const isCorrect = item.e_correta == 1; // Ajustado para ler do PHP
-        const resultClass = isCorrect ? 'correct' : 'incorrect';
-        const resultText = isCorrect ? 'ACERTOU' : 'ERROU';
-
-        if (isCorrect) {
-          correctCount++;
-        }
-
-        // Determina a Resposta Correta e a Metadata
-        const respostaReal = item.resposta_correta.toUpperCase();
-        const origemAutor = item.metadata_tipo || 'N/A';
-        const suaEscolha = item.escolha_confianca.split('_')[0].toUpperCase();
-
-
-        html += `
-            <div class="answer-item ${resultClass}">
-                <div class="header-result">
-                    <h4>Pergunta #${index + 1}</h4>
-                    <span class="${resultClass}">${resultText}</span>
-                </div>
-                <blockquote class="text-preview">
-                    "${item.texto_usuario.substring(0, 150)}..."
-                </blockquote>
-                <p><strong>Resposta Correta:</strong> <span class="correct-answer">${respostaReal}</span></p>
-                <p><strong>Origem/Autor:</strong> <span>${origemAutor}</span></p>
-                <p><strong>Sua Escolha:</strong> ${suaEscolha}</p>
-            </div>
-        `;
-      });
-
-      answerKeyContent.innerHTML = html;
-
-      // Atualiza o resumo
-      const totalQuestions = data.length;
-      summaryResults.innerHTML =
-        `<p>Você acertou **${correctCount}** de **${totalQuestions}** perguntas.</p>`;
-    }
-
-    // Espiões Globais
+    // Espiões
     document.addEventListener("copy", () => log('text_copied'));
-    document.addEventListener("click", (e) => {
-      if (!e.target.closest('input, button, a, label')) log('click', {
-        x: e.clientX,
-        y: e.clientY
-      });
+    document.addEventListener("click", (e) => { 
+        if (!e.target.closest('input, button, a, label')) log('click', { x: e.clientX, y: e.clientY }); 
     });
-
   </script>
 </body>
-
 </html>
