@@ -10,8 +10,7 @@
     rel="stylesheet">
 
   <style>
-    /* --- TEMA "LIGHT/CLEAN" (Cores Claras) --- */
-
+    /* --- TEMA "LIGHT/CLEAN" --- */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -20,7 +19,6 @@
     }
 
     body {
-      /* Gradiente Claro e Suave */
       background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
       color: #333;
       min-height: 100vh;
@@ -37,7 +35,6 @@
 
     .screen {
       background: #ffffff;
-      /* Fundo Branco */
       padding: 40px;
       border-radius: 16px;
       width: 100%;
@@ -61,13 +58,11 @@
 
     h2 {
       color: #0072ff;
-      /* Azul Vibrante */
       text-align: center;
       margin-bottom: 20px;
       font-weight: 600;
     }
 
-    /* Botões */
     .btn {
       background: linear-gradient(90deg, #00c6ff, #0072ff);
       color: white;
@@ -88,7 +83,6 @@
       box-shadow: 0 6px 20px rgba(0, 114, 255, 0.4);
     }
 
-    /* Inputs e Selects */
     .screen input[type="number"],
     .screen select {
       width: 100%;
@@ -116,7 +110,6 @@
       color: #555;
     }
 
-    /* Timer */
     .header-info {
       display: flex;
       justify-content: space-between;
@@ -135,9 +128,7 @@
       border: 1px solid #b2ebf2;
     }
 
-    /* --- ÁREA DA PERGUNTA E TEXTO --- */
-
-    /* Instrução Especial (Topo) */
+    /* Áreas de Texto */
     #top-instruction {
       font-size: 1.1em;
       text-align: center;
@@ -149,7 +140,6 @@
       border-left: 4px solid #0072ff;
     }
 
-    /* Pergunta Principal (Baixo) */
     #quiz-question-bottom {
       font-size: 1.2em;
       text-align: center;
@@ -175,14 +165,16 @@
       padding: 25px;
       border: 1px solid #eee;
       border-left: 5px solid #00c6ff;
-      border-radius: 5px;
+      border-radius: 8px;
       font-family: 'Roboto Mono', monospace;
       font-size: 15px;
-      line-height: 1.6;
+      line-height: 1.7;
       max-height: 400px;
       overflow-y: auto;
       white-space: pre-wrap;
       box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.03);
+      position: relative;
+      /* Para posicionar elementos dentro */
     }
 
     .dual .text-card {
@@ -190,11 +182,22 @@
       font-size: 13px;
     }
 
-    /* --- CONTROLES DO QUIZ --- */
+    /* Rótulo A/B dentro do cartão */
+    .card-label {
+      display: block;
+      font-weight: 700;
+      color: #0072ff;
+      font-family: 'Poppins', sans-serif;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 5px;
+      margin-bottom: 10px;
+      font-size: 1.1em;
+    }
+
+    /* Controles */
     .quiz-controls {
       display: flex;
       gap: 20px;
-      margin-top: 25px;
       margin-bottom: 20px;
       flex-wrap: wrap;
     }
@@ -205,7 +208,6 @@
       padding: 20px;
       border-radius: 12px;
       background: #f8f9fa;
-      /* Fundo cinza muito claro */
       border: 1px solid #e9ecef;
     }
 
@@ -217,10 +219,9 @@
       padding-bottom: 8px;
     }
 
-    /* Radio Buttons (Decisão) */
     .radio-group {
       display: flex;
-      gap: 15px;
+      gap: 10px;
       flex-direction: column;
     }
 
@@ -245,7 +246,7 @@
 
     .radio-option input {
       margin: 0;
-      accent-color: #00c6ff;
+      accent-color: #0072ff;
       transform: scale(1.2);
     }
 
@@ -255,7 +256,6 @@
       color: #0072ff;
     }
 
-    /* --- BOLINHAS DE CONFIANÇA (Versão Clara) --- */
     .confidence-wrapper {
       margin-top: 10px;
     }
@@ -313,7 +313,6 @@
       border-color: #00c6ff;
     }
 
-    /* Justificativa */
     #justificativa-wrapper {
       margin-top: 20px;
     }
@@ -336,7 +335,6 @@
       outline: none;
     }
 
-    /* Gabarito e Resultados */
     .answer-item {
       padding: 15px;
       border-radius: 8px;
@@ -367,26 +365,6 @@
       border: 1px solid #b3d7ff;
     }
 
-    /* Responsivo */
-    @media (max-width: 768px) {
-      .quiz-controls {
-        flex-direction: column;
-      }
-
-      .dual {
-        flex-direction: column;
-      }
-
-      .dual .text-card {
-        width: 100%;
-      }
-
-      .screen {
-        padding: 25px;
-      }
-    }
-
-    /* Consentimento checkbox */
     .consent-wrapper {
       margin-top: 20px;
       padding: 15px;
@@ -420,10 +398,29 @@
       font-size: 13px;
       text-align: justify;
       color: #666;
+      line-height: 1.6;
     }
 
     .terms-box strong {
       color: #0072ff;
+    }
+
+    @media (max-width: 768px) {
+      .quiz-controls {
+        flex-direction: column;
+      }
+
+      .dual {
+        flex-direction: column;
+      }
+
+      .dual .text-card {
+        width: 100%;
+      }
+
+      .screen {
+        padding: 25px;
+      }
     }
   </style>
 </head>
@@ -431,16 +428,17 @@
 <body>
 
   <div id="screen-start" class="screen">
-    <h2>IAH - Análise Textual</h2>
+    <h2>Inteligência Artificial ou Humano?</h2>
+    <h2>Teste da sua percepção do conteúdo textual gerado ou não por Inteligencia Artificial</h2>
     <p style="text-align:center; color:#888; margin-bottom: 25px;">Preencha os dados para iniciar.</p>
 
     <form id="form-start">
       <label>Idade:</label>
-      <input type="number" id="idade" name="idade" required min="10" max="85">
+      <input type="number" id="reg-idade" name="idade" required min="10" max="85">
 
       <label>Gênero:</label>
-      <select id="genero" name="genero" required>
-        <option value="">Selecione</option>
+      <select id="reg-genero" name="genero" required>
+        <option value="">Selecione...</option>
         <option value="F">Feminino</option>
         <option value="M">Masculino</option>
         <option value="NB">Não-binário</option>
@@ -449,8 +447,8 @@
       </select>
 
       <label>Escolaridade:</label>
-      <select id="escolaridade" name="escolaridade" required>
-        <option value="">Selecione</option>
+      <select id="reg-escolaridade" name="escolaridade" required>
+        <option value="">Selecione...</option>
         <option value="Fundamental">Fundamental</option>
         <option value="Medio_Incompleto">Médio (Incompleto)</option>
         <option value="Medio_Completo">Médio (Completo)</option>
@@ -462,7 +460,7 @@
       <div id="tecnico-field-wrapper" class="hidden">
         <label style="color:#0072ff;">Qual curso técnico?</label>
         <select id="curso_tecnico" name="curso_tecnico">
-          <option value="">Selecione</option>
+          <option value="">Selecione...</option>
           <option value="Informatica">Informática</option>
           <option value="Agricultura">Agricultura</option>
           <option value="Outro">Outro</option>
@@ -471,23 +469,21 @@
       
       <label>Nível de afinidade com tecnologia:</label>
       <select id="reg-afinidade" name="afinidade_tec" required>
-        <option value="">Selecione</option>
+        <option value="">Selecione...</option>
         <option value="Baixa">Baixa</option>
         <option value="Media">Média</option>
         <option value="Alta">Alta</option>
         <option value="Muito_Alta">Muito Alta</option>
       </select>
-
+      
       <label>Conhecimento sobre IA:</label>
       <select id="reg-ia" name="nivel_ia" required>
-        <option value="">Selecione</option>
+        <option value="">Selecione...</option>
         <option value="Nulo">Nulo</option>
         <option value="Basico">Básico</option>
         <option value="Intermediario">Intermediário</option>
         <option value="Avancado">Avançado</option>
       </select>
-
-
 
       <div class="consent-wrapper">
         <label class="consent-label">
@@ -497,8 +493,7 @@
       </div>
       <button class="btn" type="submit">Iniciar Quiz</button>
     </form>
-    <div id="loading-start" class="hidden" style="text-align: center; margin-top: 20px; color: #666;">Carregando...
-    </div>
+    <div id="loading-start" class="hidden" style="text-align: center; margin-top: 20px;">Carregando...</div>
   </div>
 
   <div id="screen-quiz" class="screen hidden">
@@ -516,11 +511,9 @@
       <h3 id="quiz-question-bottom"></h3>
 
       <div class="quiz-controls">
-
         <div id="quiz-decision-wrapper" class="control-box decision-box">
           <h4>1. Decisão</h4>
-          <div class="radio-group" id="decision-options">
-          </div>
+          <div class="radio-group" id="decision-options"></div>
         </div>
 
         <div class="control-box confidence-box">
@@ -562,9 +555,7 @@
       <span id="final-score" style="font-size:50px; font-weight:bold; color:#0072ff;">0</span>
     </div>
     <p style="text-align:center; color:#666;">Resultados salvos com sucesso.</p>
-
     <div id="answer-key-content" class="hidden"></div>
-
     <button class="btn" onclick="location.reload()">Novo Participante</button>
   </div>
 
@@ -575,105 +566,46 @@
   </div>
 
   <script>
-    const state = {
-      id_participante: null,
-      codigo_gerado: null,
-      questions: [],
-      currentIdx: 0,
-      score: 0,
-      answers: [],
-      logs: [],
-      startTime: null,
-      timerInterval: null
-    };
+    const state = { id_participante: null, questions: [], currentIdx: 0, score: 0, answers: [], logs: [], startTime: null, timerInterval: null };
 
-    function show(screenId) {
-      document.querySelectorAll('.screen').forEach(el => el.classList.add('hidden'));
-      document.getElementById(screenId).classList.remove('hidden');
-    }
+    function show(id) { document.querySelectorAll('.screen').forEach(el => el.classList.add('hidden')); document.getElementById(id).classList.remove('hidden'); }
+    function log(type, details = {}) { state.logs.push({ timestamp: Date.now(), event_type: type, details: details }); }
 
-    function log(type, details = {}) {
-      state.logs.push({
-        timestamp: Date.now(),
-        event_type: type,
-        details: details
-      });
-    }
-
-    // --- Lógica Condicional (Curso Técnico) ---
     document.addEventListener("DOMContentLoaded", () => {
-      const escolaridadeSelect = document.getElementById('escolaridade');
-      const tecnicoWrapper = document.getElementById('tecnico-field-wrapper');
-      const cursoTecnicoSelect = document.getElementById('curso_tecnico');
-
-      escolaridadeSelect.addEventListener('change', function () {
-        if (this.value === 'MedioTecnico') {
-          tecnicoWrapper.classList.remove('hidden');
-          cursoTecnicoSelect.setAttribute('required', 'required');
-        } else {
-          tecnicoWrapper.classList.add('hidden');
-          cursoTecnicoSelect.removeAttribute('required');
-          cursoTecnicoSelect.value = "";
-        }
+      document.getElementById('reg-escolaridade').addEventListener('change', function () {
+        const div = document.getElementById('tecnico-field-wrapper');
+        const input = document.getElementById('curso_tecnico');
+        if (this.value === 'MedioTecnico') { div.classList.remove('hidden'); input.setAttribute('required', 'required'); }
+        else { div.classList.add('hidden'); input.removeAttribute('required'); input.value = ""; }
       });
-
-      show('screen-start');
-      log('app_start');
+      show('screen-start'); log('app_start');
     });
 
-    // 1. REGISTRO (Com novos campos)
     document.getElementById('form-start').addEventListener('submit', async (e) => {
       e.preventDefault();
       document.getElementById('loading-start').classList.remove('hidden');
-      const formData = new FormData(e.target);
-      const data = Object.fromEntries(formData.entries());
+      const fd = new FormData(e.target);
+      const data = Object.fromEntries(fd.entries());
 
       try {
-        const response = await fetch('IAHtextregistro.php', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data)
-        });
+        const response = await fetch('IAHtextregistro.php', { method: 'POST', body: JSON.stringify(data) });
         const result = await response.json();
-
-        if (result.success) {
-          state.id_participante = result.id_participante;
-          state.codigo_gerado = result.codigo_gerado;
-          log('register_success', { pid: state.id_participante });
-          loadQuestions();
-        } else {
-          alert('Erro no registro: ' + result.error);
-          document.getElementById('loading-start').classList.add('hidden');
-        }
-      } catch (error) {
-        alert('Erro de conexão.');
-        document.getElementById('loading-start').classList.add('hidden');
-      }
+        if (result.success) { state.id_participante = result.id_participante; log('register_success', { pid: state.id_participante }); loadQuestions(); }
+        else { alert('Erro no registro: ' + result.error); document.getElementById('loading-start').classList.add('hidden'); }
+      } catch (err) { alert('Erro de conexão.'); document.getElementById('loading-start').classList.add('hidden'); }
     });
 
-    // 2. BUSCA PERGUNTAS
     async function loadQuestions() {
       try {
         const response = await fetch('IAHtextbuscar.php');
         const data = await response.json();
-
-        if (data.length > 0) {
-          state.questions = data;
-          state.currentIdx = 0;
-          show('screen-quiz');
-          renderQuestion();
-        } else {
-          throw new Error('Nenhuma pergunta recebida. Verifique o banco.');
-        }
-      } catch (error) {
-        document.getElementById('error-message').innerText = error.message;
-        show('screen-error');
-      }
+        if (data.length > 0) { state.questions = data; state.currentIdx = 0; show('screen-quiz'); renderQuestion(); }
+        else { throw new Error('Sem perguntas.'); }
+      } catch (err) { document.getElementById('error-message').innerText = err.message; show('screen-error'); }
     }
 
-    // 3. RENDERIZA PERGUNTA (Lógica da Frase em Cima + Reset Bolinhas)
     function renderQuestion() {
-      // RESET IMPORTANTE: Limpa o form e as bolinhas
+      // RESET COMPLETO PARA LIMPAR BOLINHAS
       document.getElementById('form-quiz').reset();
 
       const q = state.questions[state.currentIdx];
@@ -681,9 +613,6 @@
       const topInst = document.getElementById('top-instruction');
       const bottomQ = document.getElementById('quiz-question-bottom');
       const fraseEsp = "Analise a coerência e o estilo do texto abaixo.";
-      const fraseEsp2= "Analise o vocabulário e a estrutura do texto abaixo."
-
-      // Verifica frase especial (remove espaços extras)
       if (q.texto && q.texto.trim() === fraseEsp) {
         topInst.innerText = fraseEsp;
         topInst.classList.remove('hidden');
@@ -692,58 +621,47 @@
         topInst.classList.add('hidden');
         bottomQ.innerText = q.texto;
       }
-      if (q.texto && q.texto.trim() === fraseEsp2) {
-        topInst.innerText = fraseEsp2;
-        topInst.classList.remove('hidden');
-        bottomQ.innerText = "Por quem este texto foi criado?";
-      } else {
-        topInst.classList.add('hidden');
-        bottomQ.innerText = q.texto;
-      }
 
-      // Progress
+
       document.getElementById('progress-text').innerText = `Texto ${state.currentIdx + 1}/${state.questions.length}`;
 
-      // Renderiza Texto
       const mediaDiv = document.getElementById('media-wrapper');
       mediaDiv.className = (q.modo === 'comparativo') ? 'media-container dual' : 'media-container';
       mediaDiv.innerHTML = '';
 
-      q.conteudos.forEach(texto => {
+      q.conteudos.forEach((texto, i) => {
         const card = document.createElement('div');
         card.className = 'text-card';
-        card.innerText = texto;
+
+        // INSERE RÓTULO (TEXTO A / B) SE FOR COMPARATIVO
+        let labelHTML = '';
+        if (q.modo === 'comparativo') {
+          labelHTML = `<span class="card-label">Texto ${i === 0 ? 'A' : 'B'}</span>`;
+        }
+
+        card.innerHTML = labelHTML + texto; // Adiciona o rótulo antes do texto
         card.onmouseup = () => { if (window.getSelection().toString().length > 0) log('text_select'); };
         mediaDiv.appendChild(card);
       });
 
-      // Renderiza Opções de Decisão
-      const decisionWrapper = document.getElementById('decision-options');
-      decisionWrapper.innerHTML = '';
-      let optionsHTML = '';
+      const decWrap = document.getElementById('decision-options');
+      let html = '';
 
       if (q.modo === 'padrao') {
-        optionsHTML = `
-            <label class="radio-option">Autor Humano <input type="radio" name="main_decision" value="humano" required></label>
-            <label class="radio-option">Inteligência Artificial <input type="radio" name="main_decision" value="ia"></label>
-          `;
+        html = `<label class="radio-option">Por um Humano <input type="radio" name="main_decision" value="humano" required></label>
+                  <label class="radio-option">Por uma IA <input type="radio" name="main_decision" value="ia"></label>`;
       } else if (q.modo === 'comparativo') {
-        optionsHTML = `
-            <label class="radio-option">Texto A é IA <input type="radio" name="main_decision" value="texto_a" required></label>
-            <label class="radio-option">Texto B é IA <input type="radio" name="main_decision" value="texto_b"></label>
-          `;
+        html = `<label class="radio-option">Texto A é IA <input type="radio" name="main_decision" value="texto_a" required></label>
+                  <label class="radio-option">Texto B é IA <input type="radio" name="main_decision" value="texto_b"></label>`;
       } else if (q.modo === 'analise') {
-        optionsHTML = `
-            <label class="radio-option">Concordo <input type="radio" name="main_decision" value="concordo" required></label>
-            <label class="radio-option">Discordo <input type="radio" name="main_decision" value="discordo"></label>
-          `;
+        html = `<label class="radio-option">Concordo <input type="radio" name="main_decision" value="concordo" required></label>
+                  <label class="radio-option">Discordo <input type="radio" name="main_decision" value="discordo"></label>`;
       } else if (q.modo === 'aberta') {
-        // Esconde decisão e confiança, mostra só justificativa obrigatória
         document.querySelector('.decision-box').classList.add('hidden');
         document.querySelector('.confidence-box').classList.add('hidden');
         document.getElementById('quiz-justificativa').required = true;
         document.getElementById('label-justificativa').innerText = "3. Sua Análise (Obrigatório)";
-        optionsHTML = `<input type="hidden" name="main_decision" value="texto_livre">`;
+        html = `<input type="hidden" name="main_decision" value="texto_livre">`;
       }
 
       if (q.modo !== 'aberta') {
@@ -752,92 +670,51 @@
         document.getElementById('quiz-justificativa').required = false;
         document.getElementById('label-justificativa').innerText = "3. Justificativa (Opcional)";
       }
+      decWrap.innerHTML = html;
 
-      decisionWrapper.innerHTML = optionsHTML;
-
-      // Timer Reset
       if (state.timerInterval) clearInterval(state.timerInterval);
       state.startTime = Date.now();
       document.getElementById('quiz-timer').innerText = '00:00';
       state.timerInterval = setInterval(() => {
-        const elapsed = Math.floor((Date.now() - state.startTime) / 1000);
-        const min = String(Math.floor(elapsed / 60)).padStart(2, '0');
-        const sec = String(elapsed % 60).padStart(2, '0');
-        document.getElementById('quiz-timer').innerText = `${min}:${sec}`;
+        const el = Math.floor((Date.now() - state.startTime) / 1000);
+        document.getElementById('quiz-timer').innerText = `${String(Math.floor(el / 60)).padStart(2, '0')}:${String(el % 60).padStart(2, '0')}`;
       }, 1000);
 
       log('view_question', { id: q.item_id, modo: q.modo });
     }
 
-    // 4. ENVIO DA RESPOSTA
     document.getElementById('form-quiz').addEventListener('submit', (e) => {
       e.preventDefault();
       const fd = new FormData(e.target);
-      const q = state.questions[state.currentIdx];
-
       const main = fd.get('main_decision');
       const conf = fd.get('confidence') || 0;
+      const finalC = (state.questions[state.currentIdx].modo === 'aberta') ? 'texto_livre' : `${main}_confianca_${conf}`;
 
-      const finalChoice = (q.modo === 'aberta') ? 'texto_livre' : `${main}_confianca_${conf}`;
-
-      let isCorrect = false;
+      let isCorrect = false; const q = state.questions[state.currentIdx];
       if (q.modo === 'padrao') isCorrect = (main === q.gabarito);
       else if (q.modo === 'comparativo') isCorrect = (main === q.gabarito);
       else isCorrect = true;
-
       if (isCorrect) state.score++;
 
-      state.answers.push({
-        id: q.item_id,
-        pergunta: q.texto,
-        choice: finalChoice,
-        isCorrect: isCorrect,
-        timeTaken: (Date.now() - state.startTime) / 1000,
-        justificativa: document.getElementById('quiz-justificativa').value
-      });
-
+      state.answers.push({ id: q.item_id, pergunta: q.texto, choice: finalC, isCorrect, timeTaken: (Date.now() - state.startTime) / 1000, justificativa: document.getElementById('quiz-justificativa').value });
       state.currentIdx++;
-      if (state.currentIdx < state.questions.length) {
-        renderQuestion();
-      } else {
-        finishQuiz();
-      }
+      if (state.currentIdx < state.questions.length) renderQuestion(); else finishQuiz();
     });
 
-    // 5. FINALIZAR
     async function finishQuiz() {
       clearInterval(state.timerInterval);
       show('screen-end');
       document.getElementById('final-score').innerText = `${state.score} / ${state.questions.length}`;
 
       try {
-        await fetch('IAHtextsalvar.php', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            id_participante: state.id_participante,
-            respostas: state.answers,
-            logs: state.logs
-          })
-        });
+        await fetch('IAHtextsalvar.php', { method: 'POST', body: JSON.stringify({ id_participante: state.id_participante, respostas: state.answers, logs: state.logs }) });
         log('quiz_saved');
-
-        // Opcional: Carregar gabarito se o PHP de gabarito existir
-        if (typeof loadAnswerKey === "function") {
-          loadAnswerKey(state.id_participante);
-        }
-
-      } catch (err) {
-        console.error("Erro ao salvar:", err);
-        alert("Erro ao salvar resultados.");
-      }
+        if (typeof loadAnswerKey === "function") loadAnswerKey(state.id_participante);
+      } catch (err) { console.error("Erro ao salvar:", err); }
     }
 
-    // Espiões Globais
     document.addEventListener("copy", () => log('text_copied'));
-    document.addEventListener("click", (e) => {
-      if (!e.target.closest('input, button, a, label')) log('click', { x: e.clientX, y: e.clientY });
-    });
+    document.addEventListener("click", (e) => { if (!e.target.closest('input, button, a, label')) log('click', { x: e.clientX, y: e.clientY }); });
   </script>
 </body>
 
