@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IAH - Quiz de Vídeo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* --- TEMA DARK --- */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    /* MANTÉM: O gradiente de fundo verde-azulado */
+    body {
+      background: linear-gradient(135deg, #134E5E 0%, #71B280 100%);
+      color: #e0e0e0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      user-select: none;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* MANTÉM: Fundo escuro do painel */
+    .screen {
+      background: #1e1e1e;
+      padding: 30px;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 900px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+      border: 1px solid #333;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ALTERADO: Botão principal de VERMELHO para CIANO-ESMERALDA */
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 20px;
+      background: #00cc99;
+      color: black;
+      transition: 0.2s;
+    }
+
+    .btn:hover {
+      background: #00e6ad;
+    }
+
+    /* Um pouco mais claro no hover */
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #fff;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #444;
+      border-radius: 4px;
+      background-color: #2a2a2a;
+      color: white;
+    }
+
+    .terms-box {
+      max-height: 250px;
+      overflow-y: auto;
+      background: #2a2a2a;
+      border: 1px solid #444;
+      padding: 15px;
+      border-radius: 4px;
+      font-size: 13px;
+      text-align: justify;
+      color: #ccc;
+    }
+
+    /* ALTERADO: Destaque no texto de VERMELHO para CIANO-ESMERALDA */
+    .terms-box strong {
+      color: #00cc99;
+    }
+
+    .media-container {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-bottom: 20px;
+      align-items: center;
+    }
+
+    .video-wrapper {
+      width: 100%;
+      max-width: 600px;
+      aspect-ratio: 16/9;
+      background: #000;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .dual .video-wrapper {
+      width: 48%;
+    }
+
+    iframe,
+    video {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* ALTERADO: Opções de rádio - Cor de borda e de fundo no hover */
+    .radio-option {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      border: 1px solid #444;
+      border-radius: 4px;
+      cursor: pointer;
+      background: #2a2a2a;
+      justify-content: center;
+    }
+
+    .radio-option:hover {
+      border-color: #00cc99;
+      background: #333;
+    }
+
+    /* ALTERADO: Opções de rádio - Cor de destaque (checkbox/radio) */
+    .radio-option input {
+      margin-right: 10px;
+      accent-color: #00cc99;
+      transform: scale(1.2);
+    }
+
+    /* ALTERADO: Opções de rádio - Cor de fundo para opção marcada (tom escuro do ciano/verde) */
+    .radio-option:has(input:checked) {
+      border-color: #00cc99;
+      background: #003a2a;
+    }
+
+    /* BOLINHAS (Escala de Confiança) */
+    .confidence-wrapper {
+      margin-top: 20px;
+      text-align: center;
+      background: #2a2a2a;
+      padding: 15px;
+      border: 1px solid #444;
+      border-radius: 4px;
+    }
+
+    .conf-title {
+      font-weight: bold;
+      color: #fff;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+
+    .scale-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .scale-label {
+      font-size: 11px;
+      color: #aaa;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .scale-options {
+      display: flex;
+      gap: 8px;
+    }
+
+    .scale-btn {
+      cursor: pointer;
+      position: relative;
+    }
+
+    .scale-btn input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .scale-btn .circle {
+      width: 35px;
+      height: 35px;
+      border: 2px solid #444;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: #fff;
+      transition: 0.2s;
+      background: #1e1e1e;
+    }
+
+    /* ALTERADO: Cor da bolinha marcada para CIANO-ESMERALDA */
+    .scale-btn input:checked+.circle {
+      background-color: #00cc99;
+      border-color: #00cc99;
+      color: #1e1e1e;
+      transform: scale(1.1);
+      box-shadow: 0 0 10px rgba(0, 204, 153, 0.5);
+    }
+
+    /* ALTERADO: Cor da borda da bolinha no hover para CIANO-ESMERALDA */
+    .scale-btn:hover .circle {
+      border-color: #00cc99;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="screen-consent" class="screen">
+    <h2>Consentimento e Termos de Uso</h2>
+    <div class="terms-box">
+      <p>Bem-vindo ao <strong>Projeto IAH - Vídeos</strong>.</p>
+      <p>Ao clicar em "Eu Concordo", você confirma que tem <strong>pelo menos 12 anos de idade</strong> e que concorda
+        em participar voluntariamente desta pesquisa.</p>
+      <p><strong>Coleta de Dados:</strong> Registraremos suas respostas, tempo de decisão e interações (pausas, trocas
+        de aba) de forma anônima.</p>
+      <p><strong>Objetivo:</strong> Fins acadêmicos sobre percepção de vídeos sintéticos.</p>
+    </div>
+    <button class="btn" onclick="goRegistration()">Eu Concordo</button>
+  </div>
+
+  <div id="screen-register" class="screen hidden">
+    <h2>Perfil</h2>
+    <form id="form-register">
+      <div class="form-group"><label>Idade:</label><input type="number" id="reg-idade" required></div>
+      <div class="form-group"><label>Gênero:</label><select id="reg-genero" required>
+        <option value="M">Masculino</option>
+        <option value="F">Feminino</option>
+        <option value="NB">Não-Binário</option>
+        <option value="O">Outro</option>
+      </select></div>
+    <div class="form-group"><label>Escolaridade:</label>
+      <select id="reg-escolaridade" required>
+        <option value="Fundamental">Ensino Fundamental</option>
+        <option value="Médio">Ensino Médio</option>
+        <option value="Superior">Ensino Superior</option>
+      </select></div>
+      <div class="form-group"><label>IA:</label><select id="reg-ia" required>
+          <option value="Baixo">Baixo</option>
+          <option value="Médio">Médio</option>
+          <option value="Avançado">Avançado</option>
+          <option value="Entusiasta">Entusiasta</option>
+        </select></div>
+      <button type="submit" class="btn">Iniciar</button>
+    </form>
+  </div>
+  <div id="screen-intro" class="screen hidden">
+    <h2>ID: <span id="user-code" style="color:#ff0000">...</span></h2>
+    <p style="text-align:center">Atenção ao movimento e física.</p><button class="btn"
+      onclick="startQuiz()">Rodar</button>
+  </div>
+
+  <div id="screen-quiz" class="screen hidden">
+    <div style="text-align:right; font-size:14px; color:#888;">Tempo: <span id="timer-count"
+        style="font-weight:bold; color:#fff;">0</span>s</div>
+    <p id="quiz-question" style="font-weight:bold; text-align:center; margin-bottom:15px; font-size:1.1em; color:#fff;">
+    </p>
+    <div id="media-wrapper" class="media-container"></div>
+    <form id="form-quiz">
+      <div id="dynamic-inputs"></div>
+      <div class="form-group" style="margin-top:20px; border-top:1px solid #333; padding-top:15px;">
+        <label>Comentário:</label><input type="text" id="quiz-justificativa"></div>
+      <button type="submit" class="btn">Próximo</button>
+    </form>
+  </div>
+  <div id="screen-end" class="screen hidden">
+    <h2>Corta!</h2>
+    <p id="final-score" style="text-align:center; font-size:24px; color:#ff0000;"></p>
+  </div>
+
+  <script>
+    const state = { id_participante: null, codigo: '', questions: [], currentIdx: 0, answers: [], logs: [], startTime: 0, timerInterval: null, score: 0 };
+    function show(id) { document.querySelectorAll('.screen').forEach(el => el.classList.add('hidden')); document.getElementById(id).classList.remove('hidden'); }
+    function goRegistration() { show('screen-register'); log('view_reg'); }
+    function log(type, details = {}) { state.logs.push({ timestamp: Date.now(), event_type: type, details: { ...details, q: state.currentIdx } }); }
+
+    document.getElementById('form-register').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = e.target.querySelector('button'); btn.disabled = true;
+      const data = { idade: document.getElementById('reg-idade').value, genero: document.getElementById('reg-genero').value, escolaridade: document.getElementById('reg-escolaridade').value, nivel_ia: document.getElementById('reg-ia').value };
+      try { const res = await fetch('IAHmp4registro.php', { method: 'POST', body: JSON.stringify(data) }); const json = await res.json(); if (json.success) { state.id_participante = json.id_participante; state.codigo = json.codigo_gerado; document.getElementById('user-code').innerText = state.codigo; show('screen-intro'); } else { alert(json.error); btn.disabled = false; } } catch (err) { alert('Erro conexão'); btn.disabled = false; }
+    });
+
+    async function startQuiz() {
+      try { const res = await fetch('IAHmp4buscar.php'); state.questions = await res.json(); show('screen-quiz'); loadQuestion(); } catch (e) { alert(e.message); }
+    }
+
+    function getYoutubeId(url) {
+      if (!url.includes('youtube') && !url.includes('youtu.be')) return null;
+      const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+      const match = url.match(regExp);
+      return (match && match[2].length === 11) ? match[2] : null;
+    }
+
+    function loadQuestion() {
+      const q = state.questions[state.currentIdx];
+      const mediaDiv = document.getElementById('media-wrapper');
+      const inputsDiv = document.getElementById('dynamic-inputs');
+      document.getElementById('quiz-question').innerText = q.texto;
+
+      mediaDiv.className = (q.modo === 'comparativo') ? 'media-container dual' : 'media-container';
+      mediaDiv.innerHTML = '';
+      q.urls.forEach((url) => {
+        const wrapper = document.createElement('div'); wrapper.className = 'video-wrapper';
+        wrapper.onmouseenter = () => log('hover_video');
+        const ytId = getYoutubeId(url);
+        if (ytId) { const iframe = document.createElement('iframe'); iframe.src = `https://www.youtube.com/embed/${ytId}?rel=0&modestbranding=1`; wrapper.appendChild(iframe); }
+        else { const video = document.createElement('video'); video.src = url; video.controls = true; video.onplay = () => log('play_local'); wrapper.appendChild(video); }
+        mediaDiv.appendChild(wrapper);
+      });
+
+      inputsDiv.innerHTML = '';
+      let html = '';
+      if (q.modo === 'padrao') html += `<div style="display:flex; gap:10px;"><label class="radio-option" style="width:50%"><input type="radio" name="main_decision" value="ia" required> É IA</label><label class="radio-option" style="width:50%"><input type="radio" name="main_decision" value="humano"> É Real</label></div>`;
+      else if (q.modo === 'comparativo') html += `<div style="display:flex; gap:10px;"><label class="radio-option" style="width:50%"><input type="radio" name="main_decision" value="video_a" required> A é IA</label><label class="radio-option" style="width:50%"><input type="radio" name="main_decision" value="video_b"> B é IA</label></div>`;
+      else if (q.modo === 'analise') html += `<div style="display:flex; gap:10px;"><label class="radio-option" style="width:50%"><input type="radio" name="main_decision" value="concordo" required> Concordo</label><label class="radio-option" style="width:50%"><input type="radio" name="main_decision" value="discordo"> Discordo</label></div>`;
+
+      // BOLINHAS VERMELHAS
+      if (q.modo !== 'aberta') {
+        html += `
+            <div class="confidence-wrapper">
+                <p class="conf-title">Qual seu grau de certeza?</p>
+                <div class="scale-container">
+                    <span class="scale-label">Baixíssimo</span>
+                    <div class="scale-options">
+                        ${[1, 2, 3, 4, 5].map(n => `<label class="scale-btn"><input type="radio" name="confidence" value="${n}" required><div class="circle">${n}</div></label>`).join('')}
+                    </div>
+                    <span class="scale-label">Altíssimo</span>
+                </div>
+            </div>`;
+      } else { html += `<input type="hidden" name="main_decision" value="livre"><input type="hidden" name="confidence" value="0">`; }
+
+      inputsDiv.innerHTML = html;
+      if (state.timerInterval) clearInterval(state.timerInterval);
+      state.startTime = Date.now();
+      state.timerInterval = setInterval(() => { document.getElementById('timer-count').innerText = Math.floor((Date.now() - state.startTime) / 1000); }, 1000);
+      log('view_q', { mode: q.modo });
+    }
+
+    document.getElementById('form-quiz').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const main = fd.get('main_decision');
+      const conf = fd.get('confidence');
+      const finalC = (state.questions[state.currentIdx].modo === 'aberta') ? 'texto_livre' : `${main}_confianca_${conf}`;
+
+      let isCorrect = true; state.score++;
+      state.answers.push({ id: state.questions[state.currentIdx].item_id, pergunta: state.questions[state.currentIdx].texto, choice: finalC, isCorrect, timeTaken: (Date.now() - state.startTime) / 1000, justificativa: document.getElementById('quiz-justificativa').value });
+
+      state.currentIdx++;
+      if (state.currentIdx < state.questions.length) loadQuestion(); else finishQuiz();
+    });
+
+    async function finishQuiz() {
+      show('screen-end');
+      document.getElementById('final-score').innerText = `${state.score} / ${state.questions.length}`;
+      await fetch('IAHmp4salvar.php', { method: 'POST', body: JSON.stringify({ id_participante: state.id_participante, respostas: state.answers, logs: state.logs }) });
+    }
+
+    document.addEventListener("visibilitychange", () => log(document.visibilityState));
+    document.addEventListener("click", (e) => { if (!e.target.closest('button')) log('screen_click', { x: e.clientX, y: e.clientY }); });
+  </script>
+</body>
+
+</html>
