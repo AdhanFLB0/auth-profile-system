@@ -4,11 +4,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IAH - Quiz de Vídeo</title>
+  <title>IAH - Teste de Imagens</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
   <style>
-    /* --- TEMA "LIGHT/CLEAN" (Versão Red Video) --- */
+    /* --- TEMA "LIGHT/CLEAN" (Versão Purple Image) --- */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -18,7 +18,7 @@
 
     body {
       /* Gradiente Claro Suave */
-      background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+      background: linear-gradient(135deg, #fdfbfb 0%, #e6e9f0 100%);
       color: #333;
       min-height: 100vh;
       display: flex;
@@ -37,7 +37,7 @@
       padding: 40px;
       border-radius: 16px;
       width: 100%;
-      max-width: 950px;
+      max-width: 900px;
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
       border: 1px solid #e1e1e1;
       animation: fadeIn 0.5s ease;
@@ -56,15 +56,15 @@
     }
 
     h2 {
-      color: #cc0000;
+      color: #8e2de2;
       text-align: center;
       margin-bottom: 20px;
       font-weight: 600;
     }
 
-    /* Botões Vermelhos */
+    /* Botões Roxos */
     .btn {
-      background: linear-gradient(90deg, #cc0000, #ff4d4d);
+      background: linear-gradient(90deg, #8e2de2, #4a00e0);
       color: white;
       padding: 14px 25px;
       border: none;
@@ -75,12 +75,12 @@
       margin-top: 25px;
       transition: 0.2s;
       width: 100%;
-      box-shadow: 0 4px 15px rgba(204, 0, 0, 0.2);
+      box-shadow: 0 4px 15px rgba(142, 45, 226, 0.3);
     }
 
     .btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(204, 0, 0, 0.3);
+      box-shadow: 0 6px 20px rgba(142, 45, 226, 0.4);
     }
 
     /* Inputs */
@@ -100,7 +100,7 @@
     .screen input:focus,
     .screen select:focus {
       outline: none;
-      border-color: #cc0000;
+      border-color: #8e2de2;
       background-color: #fff;
     }
 
@@ -123,11 +123,11 @@
     }
 
     .timer {
-      background: #fff5f5;
-      color: #cc0000;
+      background: #f3e5f5;
+      color: #8e2de2;
       padding: 5px 12px;
       border-radius: 20px;
-      border: 1px solid #ffcccc;
+      border: 1px solid #e1bee7;
     }
 
     /* --- ÁREAS DE PERGUNTA --- */
@@ -135,22 +135,22 @@
       font-size: 1.1em;
       text-align: center;
       margin-bottom: 15px;
-      color: #721c24;
-      background: #f8d7da;
+      color: #4a148c;
+      background: #f3e5f5;
       padding: 10px;
       border-radius: 8px;
-      border-left: 4px solid #cc0000;
+      border-left: 4px solid #8e2de2;
     }
 
     #quiz-question-bottom {
       font-size: 1.2em;
       text-align: center;
       margin: 20px 0 15px 0;
-      color: #cc0000;
+      color: #8e2de2;
       font-weight: 700;
     }
 
-    /* Mídia (Vídeo) */
+    /* Mídia (Imagem) */
     .media-container {
       display: flex;
       flex-direction: column;
@@ -159,48 +159,48 @@
       align-items: center;
     }
 
-    .video-wrapper {
+    .image-wrapper {
       width: 100%;
-      max-width: 700px;
-      aspect-ratio: 16/9;
-      background: #000;
+      max-width: 600px;
+      background: #fff;
       border-radius: 8px;
       overflow: hidden;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      border: 1px solid #eee;
       position: relative;
+      padding: 5px;
     }
 
     .dual {
-      align-content: center;
-      text-align: center;
-      align-self: center;
-      flex-wrap: wrap;
+      flex-direction: row;
+      align-items: flex-start;
     }
 
-    .dual .video-wrapper {
-      width: 50%;
-      height: 50%;
-      align-content: center;
-      text-align: center;
-      align-self: center;
-      flex-wrap: wrap;
+    .dual .image-wrapper {
+      width: 48%;
     }
 
-    iframe, video {
+    .quiz-image {
       width: 100%;
-      height: 100%;
-      border: none;
+      height: auto;
+      display: block;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: transform 0.2s;
     }
 
-    /* Rótulo A/B (Para ficar em cima do vídeo) */
+    .quiz-image:hover {
+      transform: scale(1.02);
+    }
+
+    /* Rótulo A/B */
     .card-label {
-      display: flex;
+      display: block;
       font-weight: 800;
-      color: #cc0000;
-      text-align: start;
+      color: #8e2de2;
+      text-align: center;
       margin-bottom: 8px;
       font-size: 1.1em;
-      flex-wrap: wrap;
     }
 
     /* Controles */
@@ -222,7 +222,7 @@
 
     .control-box h4 {
       margin-bottom: 15px;
-      color: #cc0000;
+      color: #8e2de2;
       font-weight: 600;
       border-bottom: 1px solid #ddd;
       padding-bottom: 8px;
@@ -250,23 +250,23 @@
     }
 
     .radio-option:hover {
-      border-color: #cc0000;
-      background: #fff5f5;
+      border-color: #8e2de2;
+      background: #f3e5f5;
     }
 
     .radio-option input {
       margin: 0;
-      accent-color: #cc0000;
+      accent-color: #8e2de2;
       transform: scale(1.2);
     }
 
     .radio-option:has(input:checked) {
-      border-color: #cc0000;
-      background: #ffebeb;
-      color: #cc0000;
+      border-color: #8e2de2;
+      background: #f3e5f5;
+      color: #4a00e0;
     }
 
-    /* Bolinhas (Vermelhas) */
+    /* Bolinhas (Roxas) */
     .confidence-wrapper {
       margin-top: 10px;
     }
@@ -313,15 +313,15 @@
     }
 
     .scale-btn input:checked+.circle {
-      background-color: #cc0000;
-      border-color: #cc0000;
+      background-color: #8e2de2;
+      border-color: #8e2de2;
       color: #fff;
       transform: scale(1.1);
-      box-shadow: 0 4px 10px rgba(204, 0, 0, 0.3);
+      box-shadow: 0 4px 10px rgba(142, 45, 226, 0.3);
     }
 
     .scale-btn:hover .circle {
-      border-color: #cc0000;
+      border-color: #8e2de2;
     }
 
     /* Justificativa */
@@ -343,20 +343,20 @@
 
     #quiz-justificativa:focus {
       background-color: #fff;
-      border-color: #cc0000;
+      border-color: #8e2de2;
       outline: none;
     }
 
     /* Final Screen */
     .summary-results {
-      background: #fff5f5;
+      background: #f3e5f5;
       padding: 20px;
       border-radius: 12px;
       text-align: center;
       margin-bottom: 20px;
       font-size: 1.3em;
-      color: #cc0000;
-      border: 1px solid #ffcccc;
+      color: #8e2de2;
+      border: 1px solid #e1bee7;
     }
 
     /* Consentimento */
@@ -380,7 +380,7 @@
       width: auto;
       margin-right: 10px;
       transform: scale(1.2);
-      accent-color: #cc0000;
+      accent-color: #8e2de2;
     }
 
     .terms-box {
@@ -397,10 +397,10 @@
     }
 
     .terms-box strong {
-      color: #cc0000;
+      color: #8e2de2;
     }
 
-    @media (max-width: 800px) {
+    @media (max-width: 768px) {
       .quiz-controls {
         flex-direction: column;
       }
@@ -409,7 +409,7 @@
         flex-direction: column;
       }
 
-      .dual .video-wrapper {
+      .dual .image-wrapper {
         width: 100%;
       }
 
@@ -425,7 +425,7 @@
   <div id="screen-start" class="screen">
     <h2>Inteligência Artificial ou Humano?</h2>
     <h2 style="text-align:center; margin-bottom: 25px;">
-      Teste da sua percepção do conteúdo de video gerado ou não por Inteligencia Artificial</h2>
+      Teste da sua percepção do conteúdo de imagem gerado ou não por Inteligencia Artificial</h2>
     <p style="text-align:center; color:#888; margin-bottom: 25px;">Preencha os dados para iniciar.</p>
 
     <form id="form-start">
@@ -454,9 +454,9 @@
       </select>
 
       <div id="tecnico-field-wrapper" class="hidden">
-        <label style="color:#cc0000;">Qual curso técnico?</label>
+        <label style="color:#8e2de2;">Qual curso técnico?</label>
         <select id="curso_tecnico" name="curso_tecnico">
-          <option value="">Selecione...</option>
+          <option value="">Selecione</option>
           <option value="Informatica">Informática</option>
           <option value="Agricultura">Agricultura</option>
           <option value="Outro">Outro</option>
@@ -472,7 +472,6 @@
         <option value="Muito_Alta">Muito Alta</option>
       </select>
 
-
       <label>Conhecimento sobre IA:</label>
       <select id="reg-ia" name="nivel_ia" required>
         <option value="">Selecione</option>
@@ -481,6 +480,7 @@
         <option value="Intermediario">Intermediário</option>
         <option value="Avancado">Avançado</option>
       </select>
+
 
 
       <div class="consent-wrapper">
@@ -497,7 +497,7 @@
 
   <div id="screen-quiz" class="screen hidden">
     <div class="header-info">
-      <span id="progress-text">Vídeo 1/10</span>
+      <span id="progress-text">Img 1/10</span>
       <span class="timer">Tempo: <span id="quiz-timer">00:00</span></span>
     </div>
 
@@ -516,10 +516,10 @@
         </div>
 
         <div class="control-box confidence-box">
-          <h4>2. Nível de Certeza</h4>
+          <h4>2. Nível de Confiaça</h4>
           <div class="confidence-wrapper">
             <div class="scale-container">
-              <span class="scale-label">Chute</span>
+              <span class="scale-label">Zero confiança</span>
               <div style="display:flex; gap:10px;">
                 <label class="scale-btn"><input type="radio" value="1" required><span class="circle">1</span></label>
                 <label class="scale-btn"><input type="radio" value="2"><span class="circle">2</span></label>
@@ -527,7 +527,7 @@
                 <label class="scale-btn"><input type="radio" value="4"><span class="circle">4</span></label>
                 <label class="scale-btn"><input type="radio" value="5"><span class="circle">5</span></label>
               </div>
-              <span class="scale-label">Absoluta</span>
+              <span class="scale-label">Total confiança</span>
             </div>
           </div>
         </div>
@@ -538,31 +538,34 @@
         <textarea id="quiz-justificativa" name="justificativa" placeholder="O que você observou?"></textarea>
       </div>
 
-      <button class="btn" type="submit">Próximo</button>
+      <button class="btn" type="submit">Próxima</button>
     </form>
   </div>
 
   <div id="screen-end" class="screen hidden">
-    <h2>Fim do Teste!</h2>
+    <h2>Fim!</h2>
     <div class="summary-results">
       <p style="color:#555; font-size: 16px; margin:0;">Seus Acertos:</p>
-      <span id="final-score" style="font-size:50px; font-weight:bold; color:#cc0000;">0</span>
+      <span id="final-score" style="font-size:50px; font-weight:bold; color:#8e2de2;">0</span>
     </div>
-    <p style="text-align:center; color:#666;">Obrigado pela sua cooperação.
-      “Para melhorar sua identificação, observe detalhes do rosto, piscadas e expressões — IA costuma errar
-      microexpressões.”
+    <p style="text-align:center; color:#666;">Obrigado Pela cooperação, sei que pode ser dificil identificar imagens
+      <br>
+      Mas aqui estão algumas sujestões do que fazer: <br>
+      “Para melhorar sua identificação, observe detalhes como mãos, dedos e proporções — IA costuma errar nessas áreas.”
+      <br>
+      “Procure falhas em sombras e iluminação: às vezes a luz não combina com o cenário.”
+      <br>
 
-      “Preste atenção no movimento da boca: sincronias estranhas com o áudio são sinais comuns de IA.”
-
-      “Procure falhas em sombras, iluminação ou contornos — vídeos gerados por IA às vezes deixam bordas artificiais.”
-
-      “Note se o movimento das mãos ou dos dedos parece natural. Pequenas distorções são pistas importantes.”
-
-      “Escute o áudio com atenção: vozes de IA podem soar uniformes demais ou sem emoção.”
-
-      “Observe se o cenário muda de forma estranha ou se objetos borram ao se mover — isso também é indício de IA.”
-
-      “Compare vídeos reais com vídeos suspeitos para treinar o olho; a repetição de padrões ajuda muito.”</p>
+      “Olhe de perto para padrões repetidos, como texturas ou cabelos que se repetem de forma estranha.”
+      <br>
+      “Cheque objetos no fundo: IA pode gerar letras embaralhadas, placas incoerentes ou detalhes confusos.”
+      <br>
+      “Repare se a imagem parece ‘perfeita demais’: IA costuma gerar rostos muito simétricos e suavizados.”
+      <br>
+      “Observe se há distorções em áreas pequenas, como orelhas, dentes ou acessórios.”
+      <br>
+      “Compare a imagem com fotos reais semelhantes — isso ajuda a perceber pequenas incoerências.”
+    </p>
     <button class="btn" onclick="location.reload()">Novo Participante</button>
   </div>
 
@@ -596,86 +599,68 @@
       const data = Object.fromEntries(new FormData(e.target).entries());
 
       try {
-        const response = await fetch('IAHmp4registro.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+        const response = await fetch('IAHjpegregistro.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
         const result = await response.json();
         if (result.success) { state.id_participante = result.id_participante; log('register_success', { pid: state.id_participante }); loadQuestions(); }
         else { alert('Erro no registro: ' + result.error); document.getElementById('loading-start').classList.add('hidden'); }
       } catch (err) { alert('Erro de conexão.'); document.getElementById('loading-start').classList.add('hidden'); }
     });
 
-    // 2. BUSCA PERGUNTAS
+    // 2. BUSCA
     async function loadQuestions() {
       try {
-        const response = await fetch('IAHmp4buscar.php');
+        const response = await fetch('IAHjpegbuscar.php');
         const data = await response.json();
         if (data.length > 0) { state.questions = data; state.currentIdx = 0; show('screen-quiz'); renderQuestion(); }
-        else { throw new Error('Nenhuma pergunta recebida.'); }
+        else { throw new Error('Sem perguntas.'); }
       } catch (err) { document.getElementById('error-message').innerText = err.message; show('screen-error'); }
     }
 
-    // HELPER VIDEO
-    function getYoutubeId(url) {
-      if (!url.includes('youtube') && !url.includes('youtu.be')) return null;
-      const match = url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/);
-      return (match && match[2].length === 11) ? match[2] : null;
-    }
-
-    // 3. RENDERIZA PERGUNTA
+    // 3. RENDERIZA
     function renderQuestion() {
-      document.getElementById('form-quiz').reset();
+      document.getElementById('form-quiz').reset(); // Limpa bolinhas
       const q = state.questions[state.currentIdx];
+
       const topInst = document.getElementById('top-instruction');
       const bottomQ = document.getElementById('quiz-question-bottom');
-      const fraseEsp = "Analise o movimento e a física."; // Frase especial para vídeo
+      const fraseEsp = "Analise os detalhes."; // Exemplo de gatilho para imagens
 
-      if (q.texto && q.texto.trim() === fraseEsp) {
-        topInst.innerText = fraseEsp; topInst.classList.remove('hidden');
-        bottomQ.innerText = "Por quem este video foi criado?";
+      // Gambiarra do Texto em Cima
+      if (q.texto && q.texto.includes("Analise")) {
+        topInst.innerText = q.texto; topInst.classList.remove('hidden');
+        bottomQ.innerText = "Qual a origem desta imagem?";
       } else {
         topInst.classList.add('hidden'); bottomQ.innerText = q.texto;
       }
 
-      document.getElementById('progress-text').innerText = `Vídeo ${state.currentIdx + 1}/${state.questions.length}`;
+      document.getElementById('progress-text').innerText = `Img ${state.currentIdx + 1}/${state.questions.length}`;
 
-      // Renderiza Vídeo (Híbrido)
+      // Renderiza Imagens
       const mediaDiv = document.getElementById('media-wrapper');
       mediaDiv.className = (q.modo === 'comparativo') ? 'media-container dual' : 'media-container';
       mediaDiv.innerHTML = '';
 
       q.urls.forEach((url, i) => {
-        // Div container do vídeo
-        const wrapper = document.createElement('div');
-        wrapper.className = 'video-wrapper';
-        wrapper.onmouseenter = () => log('hover_video');
+        const wrapper = document.createElement('div'); wrapper.className = 'image-wrapper';
 
-        // Se for comparativo, adiciona label A/B EM CIMA do vídeo
         if (q.modo === 'comparativo') {
-          const labelDiv = document.createElement('div');
-          labelDiv.className = 'card-label';
-          labelDiv.innerText = i === 0 ? "VÍDEO A" : "VÍDEO B";
-          // Inserimos a label ANTES do vídeo (dentro do container pai se quiser, ou fora)
-          // Aqui vou criar uma div separada para o label e vídeo
+          const label = document.createElement('span');
+          label.className = 'card-label'; label.innerText = i === 0 ? "IMAGEM A" : "IMAGEM B";
           const container = document.createElement('div');
           container.style.width = "100%";
-          container.appendChild(labelDiv);
+          container.appendChild(label);
+
+          const img = document.createElement('img'); img.src = url; img.className = 'quiz-image';
+          img.onmousedown = () => log('image_click', { url });
+          wrapper.appendChild(img);
+
           container.appendChild(wrapper);
           mediaDiv.appendChild(container);
         } else {
+          const img = document.createElement('img'); img.src = url; img.className = 'quiz-image';
+          img.onmousedown = () => log('image_click', { url });
+          wrapper.appendChild(img);
           mediaDiv.appendChild(wrapper);
-        }
-
-        const ytId = getYoutubeId(url);
-        if (ytId) {
-          const iframe = document.createElement('iframe');
-          iframe.src = `https://www.youtube.com/embed/${ytId}?rel=0&modestbranding=1`;
-          wrapper.appendChild(iframe);
-        } else {
-          const video = document.createElement('video');
-          video.src = url;
-          video.controls = true;
-          video.style.width = "100%";
-          video.onplay = () => log('play_local');
-          wrapper.appendChild(video);
         }
       });
 
@@ -686,8 +671,8 @@
         html = `<label class="radio-option">Humano <input type="radio" name="main_decision" value="humano" required></label>
                   <label class="radio-option">IA <input type="radio" name="main_decision" value="ia"></label>`;
       } else if (q.modo === 'comparativo') {
-        html = `<label class="radio-option">Vídeo A é IA <input type="radio" name="main_decision" value="video_a" required></label>
-                  <label class="radio-option">Vídeo B é IA <input type="radio" name="main_decision" value="video_b"></label>`;
+        html = `<label class="radio-option">Imagem A é IA <input type="radio" name="main_decision" value="imagem_a" required></label>
+                  <label class="radio-option">Imagem B é IA <input type="radio" name="main_decision" value="imagem_b"></label>`;
       } else if (q.modo === 'analise') {
         html = `<label class="radio-option">Concordo <input type="radio" name="main_decision" value="concordo" required></label>
                   <label class="radio-option">Discordo <input type="radio" name="main_decision" value="discordo"></label>`;
@@ -716,25 +701,21 @@
         document.getElementById('quiz-timer').innerText = `${String(Math.floor(el / 60)).padStart(2, '0')}:${String(el % 60).padStart(2, '0')}`;
       }, 1000);
 
-      log('view_question', { id: q.item_id, modo: q.modo });
+      log('view_q', { id: q.item_id, modo: q.modo });
     }
 
     // 4. ENVIO
     document.getElementById('form-quiz').addEventListener('submit', (e) => {
       e.preventDefault();
       const fd = new FormData(e.target);
-      const q = state.questions[state.currentIdx];
-      const main = fd.get('main_decision');
-      const conf = fd.get('confidence') || 0;
-      const finalChoice = (state.questions[state.currentIdx].modo === 'aberta') ? 'texto_livre' : `${main}_confianca_${conf}`;
+      const choice = (state.questions[state.currentIdx].modo === 'aberta') ? 'texto_livre' : `${fd.get('main_decision')}_confianca_${fd.get('confidence')}`;
 
-      let isCorrect = false;
-      if (q.modo === 'padrao') isCorrect = (main === q.gabarito);
-      else if (q.modo === 'comparativo') isCorrect = (main === q.gabarito);
+      let isCorrect = false; const q = state.questions[state.currentIdx];
+      if (q.modo === 'padrao' || q.modo === 'comparativo') isCorrect = (fd.get('main_decision') === q.gabarito);
       else isCorrect = true;
       if (isCorrect) state.score++;
 
-      state.answers.push({ id: q.item_id, pergunta: q.texto, choice: finalChoice, isCorrect, timeTaken: (Date.now() - state.startTime) / 1000, justificativa: document.getElementById('quiz-justificativa').value });
+      state.answers.push({ id: q.item_id, pergunta: q.texto, choice: choice, isCorrect, timeTaken: (Date.now() - state.startTime) / 1000, justificativa: fd.get('justificativa') });
       state.currentIdx++;
       if (state.currentIdx < state.questions.length) renderQuestion(); else finishQuiz();
     });
@@ -745,14 +726,13 @@
       show('screen-end');
       document.getElementById('final-score').innerText = `${state.score} / ${state.questions.length}`;
       try {
-        await fetch('IAHmp4salvar.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id_participante: state.id_participante, respostas: state.answers, logs: state.logs }) });
+        await fetch('IAHjpegsalvar.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id_participante: state.id_participante, respostas: state.answers, logs: state.logs }) });
         log('quiz_saved');
       } catch (err) { console.error("Erro ao salvar:", err); alert("Erro ao salvar resultados."); }
     }
 
-    document.addEventListener("click", (e) => {
-      if (!e.target.closest('input, button, a, label')) log('click', { x: e.clientX, y: e.clientY });
-    });
+    document.addEventListener("visibilitychange", () => log(document.visibilityState));
+    document.addEventListener("click", (e) => { if (!e.target.closest('input, button, label')) log('click', { x: e.clientX, y: e.clientY }); });
   </script>
 </body>
 
