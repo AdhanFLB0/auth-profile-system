@@ -328,9 +328,15 @@
     /* Justificativa */
     #justificativa-wrapper {
       margin-top: 20px;
+      padding: 20px;
+      border-radius: 12px;
+      background: #f8f9fa;
+      border: 1px solid #e9ecef;
+      width: 100%;
     }
 
-    #quiz-justificativa {
+    #quiz-justificativa,
+    #final-feedback-text {
       width: 100%;
       height: 80px;
       padding: 15px;
@@ -342,7 +348,8 @@
       resize: vertical;
     }
 
-    #quiz-justificativa:focus {
+    #quiz-justificativa:focus,
+    #final-feedback-text:focus {
       background-color: #fff;
       border-color: #8e2de2;
       outline: none;
@@ -535,6 +542,11 @@
           </div>
         </div>
       </div>
+
+      <div id="justificativa-wrapper">
+        <h4 id="label-justificativa">3. Justificativa (Opcional)</h4>
+        <textarea id="quiz-justificativa" placeholder="Opcional: Descreva seu raciocínio"></textarea>
+      </div>
       <button class="btn" type="submit">Próxima</button>
     </form>
   </div>
@@ -573,10 +585,34 @@
   </div>
 
   <script>
-    const state = { id_participante: null, questions: [], currentIdx: 0, score: 0, answers: [], logs: [], startTime: null, timerInterval: null };
+    const state = { id_participante: null, questions: [], currentIdx: 0, score: 0, answers: [], logs: [], startTime: null, timerInterval: null, inFinalQuestion: false };
 
     function show(screenId) { document.querySelectorAll('.screen').forEach(el => el.classList.add('hidden')); document.getElementById(screenId).classList.remove('hidden'); }
     function log(type, details = {}) { state.logs.push({ timestamp: Date.now(), event_type: type, details: details }); }
+
+    // Função para configurar o campo de Justificativa (CORRIGIDA)
+    function toggleJustificativa(isRequired, labelText) {
+      const wrapper = document.getElementById('justificativa-wrapper');
+      const textarea = document.getElementById('quiz-justificativa');
+      const label = document.getElementById('label-justificativa');
+
+      // Usa setAttribute e removeAttribute para garantir que o REQUIRED seja tratado corretamente no DOM
+      if (isRequired) {
+        textarea.setAttribute('required', 'required');
+      } else {
+        textarea.removeAttribute('required');
+      }
+
+      textarea.value = ''; // Limpa o conteúdo
+      label.innerText = labelText;
+      wrapper.classList.remove('hidden');
+      wrapper.style.border = isRequired ? '2px solid #cc0000' : '1px solid #e9ecef';
+    }
+
+    // Restaurar a submissão original do formulário
+    function restoreQuizSubmitHandler() {
+      document.getElementById('form-quiz').onsubmit = handleQuizSubmit;
+    }
 
     // --- Lógica Condicional (Curso Técnico) ---
     document.addEventListener("DOMContentLoaded", () => {
@@ -586,6 +622,7 @@
         if (this.value === 'MedioTecnico') { div.classList.remove('hidden'); input.setAttribute('required', 'required'); }
         else { div.classList.add('hidden'); input.removeAttribute('required'); input.value = ""; }
       });
+      restoreQuizSubmitHandler(); // Garante que a submissão inicial esteja configurada
       show('screen-start'); log('app_start');
     });
 
@@ -615,12 +652,21 @@
 
     // 3. RENDERIZA
     function renderQuestion() {
-      document.getElementById('form-quiz').reset(); // Limpa bolinhas
+      document.getElementById('form-quiz').reset();
+      state.inFinalQuestion = false;
+
       const q = state.questions[state.currentIdx];
 
       const topInst = document.getElementById('top-instruction');
       const bottomQ = document.getElementById('quiz-question-bottom');
-      const fraseEsp = "Analise os detalhes."; // Exemplo de gatilho para imagens
+      const decBox = document.querySelector('.decision-box');
+      const confBox = document.querySelector('.confidence-box');
+      const mediaDiv = document.getElementById('media-wrapper');
+
+      decBox.classList.remove('hidden');
+      confBox.classList.remove('hidden');
+      document.querySelector('.btn').innerText = "Próxima";
+
 
       // Gambiarra do Texto em Cima
       if (q.texto && q.texto.includes("Analise")) {
@@ -633,7 +679,6 @@
       document.getElementById('progress-text').innerText = `Img ${state.currentIdx + 1}/${state.questions.length}`;
 
       // Renderiza Imagens
-      const mediaDiv = document.getElementById('media-wrapper');
       mediaDiv.className = (q.modo === 'comparativo') ? 'media-container dual' : 'media-container';
       mediaDiv.innerHTML = '';
 
@@ -661,21 +706,22 @@
         }
       });
 
-      // Opções
+      // Opções e Justificativa
       const decWrap = document.getElementById('decision-options');
       let html = '';
       if (q.modo === 'padrao') {
-        html = `<label class="radio-option">Por um Humano <input type="radio" name="main_decision" value="humano" required></label>
-                  <label class="radio-option">Por uma IA <input type="radio" name="main_decision" value="ia"></label>`;
+        toggleJustificativa(false, '3. Justificativa (Opcional)');
+        html = `<label class="radio-option">Por um Humano <input type="radio" value="humano" required></label>
+                  <label class="radio-option">Por uma IA <input type="radio" value="ia"></label>`;
       } else if (q.modo === 'comparativo') {
-        html = `<label class="radio-option">Imagem A é IA <input type="radio" name="main_decision" value="imagem_a" required></label>
-                  <label class="radio-option">Imagem B é IA <input type="radio" name="main_decision" value="imagem_b"></label>`;
+        toggleJustificativa(false, '3. Justificativa (Opcional)');
+        html = `<label class="radio-option">Imagem A é IA <input type="radio" value="imagem_a" required></label>
+                  <label class="radio-option">Imagem B é IA <input type="radio" value="imagem_b"></label>`;
       } else if (q.modo === 'aberta') {
-        document.querySelector('.decision-box').classList.add('hidden');
-        document.querySelector('.confidence-box').classList.add('hidden');
-        document.getElementById('quiz-justificativa').required = true;
-        document.getElementById('label-justificativa').innerText = "3. Sua Análise (Obrigatório)";
-        html = `<input type="hidden" name="main_decision" value="texto_livre">`;
+        decBox.classList.add('hidden');
+        confBox.classList.add('hidden');
+        toggleJustificativa(true, '3. Sua Análise (Obrigatório)');
+        html = `<input type="hidden" value="texto_livre">`;
       }
 
       decWrap.innerHTML = html;
@@ -692,24 +738,24 @@
       log('view_q', { id: q.item_id, modo: q.modo });
     }
 
-    // 4. ENVIO
-    document.getElementById('form-quiz').addEventListener('submit', (e) => {
+    // 4. ENVIO PRINCIPAL
+    function handleQuizSubmit(e) {
       e.preventDefault();
 
-      // --- BLOCO NOVO: SE ESTIVER NA PERGUNTA FINAL ---
+      // --- PERGUNTA FINAL: SE JÁ ESTIVER NO ESTADO DE FEEDBACK ---
       if (state.inFinalQuestion) {
-          const feedback = document.getElementById('final-feedback-text').value;
-          // Salva como uma resposta especial (ID 0)
-          state.answers.push({
-              id: 0, 
-              pergunta: "FEEDBACK FINAL: Como identificou IA?", 
-              choice: "feedback_final", 
-              isCorrect: true, // Conta como participação
-              timeTaken: 0,
-              justificativa: feedback
-          });
-          finishQuiz(); // Agora sim finaliza de verdade
-          return;
+        const feedback = document.getElementById('final-feedback-text').value;
+        state.answers.push({
+          id: 0,
+          pergunta: "FEEDBACK FINAL: Como identificou IA?",
+          choice: "feedback_final",
+          isCorrect: true,
+          timeTaken: 0,
+          justificativa: feedback
+        });
+        document.getElementById('final-feedback-container').remove();
+        finishQuiz();
+        return;
       }
       // ------------------------------------------------
 
@@ -717,14 +763,15 @@
       const q = state.questions[state.currentIdx];
       const main = fd.get('main_decision');
       const conf = fd.get('confidence') || 0;
-      
+      const justificativa_valor = fd.get('justificativa') || '';
+
       const finalChoice = (q.modo === 'aberta') ? 'texto_livre' : `${main}_confianca_${conf}`;
 
       let isCorrect = false;
       if (q.modo === 'padrao') isCorrect = (main === q.gabarito);
       else if (q.modo === 'comparativo') isCorrect = (main === q.gabarito);
-      else isCorrect = true; 
-      if(isCorrect) state.score++;
+      else isCorrect = true;
+      if (isCorrect) state.score++;
 
       state.answers.push({
         id: q.item_id,
@@ -732,57 +779,86 @@
         choice: finalChoice,
         isCorrect: isCorrect,
         timeTaken: (Date.now() - state.startTime) / 1000,
-        justificativa: document.getElementById('quiz-justificativa').value
+        justificativa: justificativa_valor
       });
 
       state.currentIdx++;
-      
-      // --- ALTERAÇÃO DO IF FINAL ---
+
+      // Checa se o quiz terminou (todas as perguntas foram respondidas)
       if (state.currentIdx < state.questions.length) {
-          renderQuestion(); 
+        renderQuestion();
       } else {
-          // Em vez de finishQuiz(), chama a pergunta extra
-          loadFinalFeedback(); 
+        loadFinalFeedback();
       }
-    });
-    // FUNÇÃO EXTRA: PERGUNTA FINAL (IMAGEM)
-    function loadFinalFeedback() {
-      document.getElementById('media-wrapper').innerHTML = '';
-      document.querySelector('.quiz-controls').innerHTML = `
-        <div class="control-box" style="width:100%; background:white; border-color:black;">
-            <h4 style="color:purple;">Reflexão</h4>
-            <label style="display:block; margin-bottom:15px; color:#333; font-size:1.1em;">
-                Como você identificou que alguma <strong>imagem</strong> foi gerada por IA? 
-                Nos conte mais sobre a sua linha de raciocínio.
-            </label>
-            <textarea id="final-feedback-text" required 
-                style="width:100%; height:150px; padding:15px; border:1px solid #b21f1f; border-radius:8px;"
-                placeholder="Ex: Mãos deformadas, fundo borrado..."></textarea>
-        </div>
-      `;
-      document.getElementById('quiz-question').innerText = "Pergunta Final";
-      // Esconde justificativa antiga (procure pelo ID correto no seu HTML, geralmente é o pai do textarea)
-      const justDiv = document.querySelector('#form-quiz > .form-group'); 
-      if(justDiv){ 
-      justDiv.style.display = 'none';
     }
+    document.getElementById('form-quiz').addEventListener('submit', handleQuizSubmit);
+
+    // FUNÇÃO EXTRA: PERGUNTA FINAL (TEXTO)
+    function loadFinalFeedback() {
+      clearInterval(state.timerInterval);
+      document.getElementById('form-quiz').reset();
+
+      // Esconde elementos do quiz padrão
+      document.getElementById('media-wrapper').innerHTML = '';
+      document.getElementById('top-instruction').classList.add('hidden');
+      document.querySelector('.decision-box').classList.add('hidden');
+      document.querySelector('.confidence-box').classList.add('hidden');
+      document.getElementById('justificativa-wrapper').classList.add('hidden');
+
+      // Muda o título e a instrução
+      document.getElementById('quiz-question-bottom').innerText = "Reflexão Final";
+      document.getElementById('progress-text').innerText = "Fim";
+      document.getElementById('quiz-timer').innerText = '00:00';
+
+      // Adiciona o campo de feedback final
+      const formQuiz = document.getElementById('form-quiz');
+      const finalFeedbackHTML = `
+          <div id="final-feedback-container" class="control-box" style="width:100%; background:#f8f9fa; border: 1px solid #8e2de2; margin-top: 15px;">
+              <h4 style="color:#4a00e0;">Como você identificou que alguma imagem foi gerada por IA?</h4>
+              <label style="display:block; margin-bottom:15px; color:#555; font-size:1em;">
+                  Nos conte mais sobre sua linha de raciocínio e os detalhes que você mais buscou.
+              </label>
+              <textarea id="final-feedback-text" name="final_feedback_text" required 
+                  style="width:100%; height:150px; padding:15px; border:1px solid #e1bee7; border-radius:8px; background-color: white;"
+                  placeholder="Ex: Mãos deformadas, fundo borrado, simetria excessiva, etc."></textarea>
+          </div>
+      `;
+
+      const submitBtn = formQuiz.querySelector('.btn');
+      // Remove o container se já existir (em caso de erro ou teste)
+      if (document.getElementById('final-feedback-container')) {
+        document.getElementById('final-feedback-container').remove();
+      }
+      submitBtn.insertAdjacentHTML('beforebegin', finalFeedbackHTML);
+
+      submitBtn.innerText = "Finalizar Teste";
+
       state.inFinalQuestion = true;
+      log('view_final_feedback');
     }
 
     // 5. FINAL
     async function finishQuiz() {
       clearInterval(state.timerInterval);
       show('screen-end');
+      // Subtrai 1 do total de perguntas para não contar o feedback como pergunta de quiz
       document.getElementById('final-score').innerText = `${state.score} / ${state.questions.length}`;
       try {
-        await fetch('IAHjpegsalvar.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id_participante: state.id_participante, respostas: state.answers, logs: state.logs }) });
-        log('quiz_saved');
-      } catch (err) { console.error("Erro ao salvar:", err); alert("Erro ao salvar resultados."); }
+        const response = await fetch('IAHjpegsalvar.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id_participante: state.id_participante, respostas: state.answers, logs: state.logs }) });
+        const result = await response.json();
+        if (result.success) {
+          log('quiz_saved');
+        } else {
+          console.error("Erro ao salvar:", result.error);
+          alert("Erro ao salvar resultados: " + result.error);
+        }
+      } catch (err) { console.error("Erro de conexão ao salvar:", err); alert("Erro de conexão ao salvar resultados."); }
     }
 
     document.addEventListener("visibilitychange", () => log(document.visibilityState));
     document.addEventListener("click", (e) => { if (!e.target.closest('input, button, label')) log('click', { x: e.clientX, y: e.clientY }); });
   </script>
+
 </body>
 
 </html>
