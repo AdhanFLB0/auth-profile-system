@@ -171,22 +171,20 @@
     }
 
     .dual {
-      align-content: center;
-      text-align: center;
-      align-self: center;
-      flex-wrap: wrap;
+      display: flex;
+      -ms-flex-align: center;
+      justify-items: center;
     }
 
     .dual .video-wrapper {
-      width: 50%;
-      height: 50%;
-      align-content: center;
-      text-align: center;
-      align-self: center;
+      width: 100%;
+      height: 75%;
+      display: flex;
       flex-wrap: wrap;
     }
 
-    iframe, video {
+    iframe,
+    video {
       width: 100%;
       height: 100%;
       border: none;
@@ -194,13 +192,10 @@
 
     /* Rótulo A/B (Para ficar em cima do vídeo) */
     .card-label {
-      display: flex;
       font-weight: 800;
       color: #cc0000;
       text-align: start;
-      margin-bottom: 8px;
       font-size: 1.1em;
-      flex-wrap: wrap;
     }
 
     /* Controles */
@@ -271,21 +266,81 @@
       margin-top: 10px;
     }
 
+    /* --- ESTILO DOS BOTÕES DE CONFIANÇA (MP4) --- */
+
+    /* Container geral da escala */
     .scale-container {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      gap: 5px;
-      text-align: center;
+      /* Espalha os botões */
+      gap: 10px;
+      /* Espaço entre eles */
+      margin-top: 15px;
     }
 
-    .scale-label {
-      font-size: 10px;
+    .scale-item {
+      flex: 1;
+      /* Todos com o mesmo tamanho */
+      position: relative;
+    }
+
+    /* 1. Esconder a "bolinha" feia original */
+    .scale-item input[type="radio"] {
+      display: none;
+    }
+
+    /* 2. Estilizar o Label para parecer um botão */
+    .scale-item label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      background-color: #fff;
+      border: 2px solid #e0e0e0;
+      /* Borda cinza suave */
+      border-radius: 12px;
+      /* Bordas arredondadas */
+      padding: 15px 5px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
       color: #888;
+      height: 100%;
+    }
+
+    /* Texto do número (1, 2, 3...) */
+    .scale-item label {
+      font-size: 1.2rem;
       font-weight: 600;
-      text-transform: uppercase;
-      display: block;
-      margin-top: 5px;
+    }
+
+    /* Texto pequeno (Chute, Certeza) */
+    .scale-item label span {
+      font-size: 0.75rem;
+      margin-top: 4px;
+      font-weight: normal;
+    }
+
+    /* 3. Efeito ao passar o mouse (Hover) */
+    .scale-item label:hover {
+      border-color: #ff6b6b;
+      /* Vermelho claro */
+      transform: translateY(-3px);
+      /* Sobe um pouquinho */
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    /* 4. ESTADO SELECIONADO (CHECKED) - A Mágica */
+    .scale-item input[type="radio"]:checked+label {
+      background-color: #fff5f5;
+      /* Fundo vermelhinho bem claro */
+      border-color: #cc0000;
+      /* Borda vermelha forte */
+      color: #cc0000;
+      /* Texto vermelho */
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(204, 0, 0, 0.2);
+      /* Sombra vermelha */
     }
 
     .scale-btn {
@@ -417,6 +472,27 @@
         padding: 25px;
       }
     }
+
+    /* --- ESTILO DA NOTA FINAL --- */
+    .score-box {
+      background: #f8f9fa;
+      border: 2px solid #e9ecef;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 20px auto;
+      width: 100%;
+      max-width: 300px;
+      /* Limita a largura para ficar bonito */
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .big-score {
+      font-size: 3.5rem;
+      /* Letra bem grande */
+      font-weight: 700;
+      color: #2c3e50;
+      line-height: 1.2;
+    }
   </style>
 </head>
 
@@ -429,10 +505,10 @@
     <p style="text-align:center; color:#888; margin-bottom: 25px;">Preencha os dados para iniciar.</p>
 
     <form id="form-start">
-      <label>Idade:</label>
+      <label>* Idade:</label>
       <input type="number" id="reg-idade" name="idade" required min="10" max="85">
 
-      <label>Gênero:</label>
+      <label>* Gênero:</label>
       <select id="reg-genero" name="genero" required>
         <option value="">Selecione...</option>
         <option value="F">Feminino</option>
@@ -442,30 +518,31 @@
         <option value="X">Prefiro não informar</option>
       </select>
 
-      <label>Escolaridade:</label>
+      <label>* Escolaridade:</label>
       <select id="reg-escolaridade" name="escolaridade" required>
         <option value="">Selecione...</option>
-        <option value="Fundamental">Fundamental</option>
-        <option value="Medio_Incompleto">Médio (Incompleto)</option>
-        <option value="Medio_Completo">Médio (Completo)</option>
-        <option value="MedioTecnico">Médio/Técnico</option>
+        <option value="Fundamental">Fundamental Incompleto</option>
+        <option value="Fundamental">Fundamental Completo</option>
+        <option value="MedioTecnico">Médio/Técnico Incompleto</option>
+        <option value="MedioTecnico">Médio/Técnico Completo</option>
         <option value="Superior">Superior</option>
         <option value="Pos_Graduacao">Pós-Graduação</option>
       </select>
 
       <div id="tecnico-field-wrapper" class="hidden">
-        <label style="color:#cc0000;">Qual curso técnico?</label>
+        <label>* Qual Ensino médio?*</label>
         <select id="curso_tecnico" name="curso_tecnico">
           <option value="">Selecione...</option>
-          <option value="Informatica">Informática</option>
-          <option value="Agricultura">Agricultura</option>
-          <option value="Outro">Outro</option>
+          <option value="Informatica">Ensino tecnico em Informática</option>
+          <option value="Agricultura">Ensino tecnico em Agricultura</option>
+          <option value="Outro">Outro Ensino tecnico</option>
         </select>
       </div>
 
-      <label>Nível de afinidade com tecnologia:</label>
+      <label>* Nível de afinidade com tecnologia:</label>
       <select id="reg-afinidade" name="afinidade_tec" required>
         <option value="">Selecione</option>
+        <option value="Baixa">Muito Baixa</option>
         <option value="Baixa">Baixa</option>
         <option value="Media">Média</option>
         <option value="Alta">Alta</option>
@@ -473,7 +550,7 @@
       </select>
 
 
-      <label>Conhecimento sobre IA:</label>
+      <label>* Conhecimento sobre IA:</label>
       <select id="reg-ia" name="nivel_ia" required>
         <option value="">Selecione</option>
         <option value="Nulo">Nulo</option>
@@ -515,20 +592,35 @@
           <div class="radio-group" id="decision-options"></div>
         </div>
 
-        <div class="control-box confidence-box">
-          <h4>2. Nível de Certeza</h4>
-          <div class="confidence-wrapper">
-            <div class="scale-container">
-              <span class="scale-label">Chute</span>
-              <div style="display:flex; gap:10px;">
-                <label class="scale-btn"><input type="radio" value="1" required><span class="circle">1</span></label>
-                <label class="scale-btn"><input type="radio" value="2"><span class="circle">2</span></label>
-                <label class="scale-btn"><input type="radio" value="3"><span class="circle">3</span></label>
-                <label class="scale-btn"><input type="radio" value="4"><span class="circle">4</span></label>
-                <label class="scale-btn"><input type="radio" value="5"><span class="circle">5</span></label>
-              </div>
-              <span class="scale-label">Absoluta</span>
+        <div class="confidence-box control-box">
+          <label class="section-label">2. Nível de Confiança</label>
+          <div class="scale-container">
+
+            <div class="scale-item">
+              <input type="radio" id="conf1" name="confidence" value="1">
+              <label for="conf1">1</label>
             </div>
+
+            <div class="scale-item">
+              <input type="radio" id="conf2" name="confidence" value="2">
+              <label for="conf2">2</label>
+            </div>
+
+            <div class="scale-item">
+              <input type="radio" id="conf3" name="confidence" value="3">
+              <label for="conf3">3</label>
+            </div>
+
+            <div class="scale-item">
+              <input type="radio" id="conf4" name="confidence" value="4">
+              <label for="conf4">4</label>
+            </div>
+
+            <div class="scale-item">
+              <input type="radio" id="conf5" name="confidence" value="5">
+              <label for="conf5">5</label>
+            </div>
+
           </div>
         </div>
       </div>
@@ -542,12 +634,18 @@
     </form>
   </div>
 
-  <div id="screen-end" class="screen hidden">
-    <h2>Fim do Teste!</h2>
-    <div class="summary-results">
-      <p style="color:#555; font-size: 16px; margin:0;">Seus Acertos:</p>
-      <span id="final-score" style="font-size:50px; font-weight:bold; color:#cc0000;">0</span>
+  <div id="screen-end" class="screen hidden" style="text-align: center;">
+    <h2 style="color: #333; margin-bottom: 20px;">Obrigado pela participação!</h2>
+
+    <p style="font-size: 1.1rem; color: #666; margin-bottom: 10px;">
+      Os seus dados foram salvos com sucesso.
+    </p>
+
+    <div class="score-box">
+      <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: #888;">Seus Acertos: </p>
+      <div id="final-score" class="big-score">-- / --</div>
     </div>
+
     <p style="text-align:center; color:#666;">Obrigado pela sua cooperação.
       “Para melhorar sua identificação, observe detalhes do rosto, piscadas e expressões — IA costuma errar
       microexpressões.”
@@ -563,7 +661,10 @@
       “Observe se o cenário muda de forma estranha ou se objetos borram ao se mover — isso também é indício de IA.”
 
       “Compare vídeos reais com vídeos suspeitos para treinar o olho; a repetição de padrões ajuda muito.”</p>
-    <button class="btn" onclick="location.reload()">Novo Participante</button>
+
+    <button onclick="location.reload()" class="btn">
+      Novo Participante
+    </button>
   </div>
 
   <div id="screen-error" class="screen hidden">
@@ -573,185 +674,368 @@
   </div>
 
   <script>
-    const state = { id_participante: null, questions: [], currentIdx: 0, score: 0, answers: [], logs: [], startTime: null, timerInterval: null };
+    /* --- ESTADO GLOBAL --- */
+    const state = {
+      id_participante: null,
+      questions: [],
+      currentIdx: 0,
+      score: 0,
+      answers: [],
+      logs: [],
+      startTime: null,
+      timerInterval: null,
+      inFinalQuestion: false
+    };
 
-    function show(screenId) { document.querySelectorAll('.screen').forEach(el => el.classList.add('hidden')); document.getElementById(screenId).classList.remove('hidden'); }
-    function log(type, details = {}) { state.logs.push({ timestamp: Date.now(), event_type: type, details: details }); }
-
-    // --- Lógica Condicional (Curso Técnico) ---
-    document.addEventListener("DOMContentLoaded", () => {
-      document.getElementById('reg-escolaridade').addEventListener('change', function () {
-        const div = document.getElementById('tecnico-field-wrapper');
-        const input = document.getElementById('curso_tecnico');
-        if (this.value === 'MedioTecnico') { div.classList.remove('hidden'); input.setAttribute('required', 'required'); }
-        else { div.classList.add('hidden'); input.removeAttribute('required'); input.value = ""; }
-      });
-      show('screen-start'); log('app_start');
-    });
-
-    // 1. REGISTRO
-    document.getElementById('form-start').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      document.getElementById('loading-start').classList.remove('hidden');
-      const data = Object.fromEntries(new FormData(e.target).entries());
-
-      try {
-        const response = await fetch('IAHmp4registro.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
-        const result = await response.json();
-        if (result.success) { state.id_participante = result.id_participante; log('register_success', { pid: state.id_participante }); loadQuestions(); }
-        else { alert('Erro no registro: ' + result.error); document.getElementById('loading-start').classList.add('hidden'); }
-      } catch (err) { alert('Erro de conexão.'); document.getElementById('loading-start').classList.add('hidden'); }
-    });
-
-    // 2. BUSCA PERGUNTAS
-    async function loadQuestions() {
-      try {
-        const response = await fetch('IAHmp4buscar.php');
-        const data = await response.json();
-        if (data.length > 0) { state.questions = data; state.currentIdx = 0; show('screen-quiz'); renderQuestion(); }
-        else { throw new Error('Nenhuma pergunta recebida.'); }
-      } catch (err) { document.getElementById('error-message').innerText = err.message; show('screen-error'); }
+    /* --- UTILITÁRIOS --- */
+    function show(screenId) {
+      document.querySelectorAll('.screen').forEach(el => el.classList.add('hidden'));
+      const target = document.getElementById(screenId);
+      if (target) target.classList.remove('hidden');
     }
 
-    // HELPER VIDEO
+    function log(eventName, eventDetails = {}) {
+      state.logs.push({
+        timestamp: Date.now(),
+        event_type: eventName,
+        details: eventDetails
+      });
+    }
+
     function getYoutubeId(url) {
       if (!url.includes('youtube') && !url.includes('youtu.be')) return null;
       const match = url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/);
       return (match && match[2].length === 11) ? match[2] : null;
     }
 
-    // 3. RENDERIZA PERGUNTA
+    async function safeFetchJson(url, options = {}) {
+      const response = await fetch(url, options);
+      const text = await response.text();
+      try {
+        return JSON.parse(text);
+      } catch (e) {
+        console.error("Erro bruto do servidor:", text);
+        throw new Error(`Erro do servidor:\n${text.substring(0, 300)}...`);
+      }
+    }
+
+    /* --- 1. REGISTRO --- */
+    async function handleRegister(e) {
+      e.preventDefault();
+      const submitBtn = document.querySelector('#form-start .btn');
+      const loadingDiv = document.getElementById('loading-start');
+
+      submitBtn.disabled = true;
+      submitBtn.innerText = "Processando...";
+      if (loadingDiv) loadingDiv.classList.remove('hidden');
+
+      const formData = new FormData(e.target);
+      const plainFormData = Object.fromEntries(formData.entries());
+
+      try {
+        const result = await safeFetchJson('IAHmp4registro.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(plainFormData)
+        });
+
+        if (result.success || result.id_participante) {
+          state.id_participante = result.id_participante || result.id;
+          log('registration_success', { id: state.id_participante });
+          await loadQuestions();
+        } else {
+          throw new Error(result.error || "Erro no registro.");
+        }
+      } catch (err) {
+        alert("Erro no Registro: " + err.message);
+        submitBtn.disabled = false;
+        submitBtn.innerText = "INICIAR QUIZ";
+        if (loadingDiv) loadingDiv.classList.add('hidden');
+      }
+    }
+
+    /* --- 2. BUSCAR PERGUNTAS --- */
+    async function loadQuestions() {
+      try {
+        const data = await safeFetchJson('IAHmp4buscar.php');
+        if (Array.isArray(data) && data.length > 0) {
+          state.questions = data.slice(0, 10);
+          state.currentIdx = 0;
+          show('screen-quiz');
+          renderQuestion();
+        } else {
+          throw new Error('Nenhuma pergunta encontrada.');
+        }
+      } catch (err) {
+        alert("Erro ao buscar perguntas: " + err.message);
+      }
+    }
+
+    /* --- 3. RENDERIZAR --- */
     function renderQuestion() {
       document.getElementById('form-quiz').reset();
+      clearInterval(state.timerInterval);
+      state.inFinalQuestion = false;
+
+      if (state.currentIdx >= state.questions.length) {
+        loadFinalFeedback();
+        return;
+      }
+
       const q = state.questions[state.currentIdx];
+
       const topInst = document.getElementById('top-instruction');
       const bottomQ = document.getElementById('quiz-question-bottom');
-      const fraseEsp = "Analise o movimento e a física."; // Frase especial para vídeo
+      const mediaDiv = document.getElementById('media-wrapper');
+      const justWrap = document.getElementById('justificativa-wrapper');
+      const justInput = document.getElementById('quiz-justificativa');
+      const labelJust = document.getElementById('label-justificativa');
 
+      document.querySelector('.decision-box').classList.remove('hidden');
+      document.querySelector('.confidence-box').classList.remove('hidden');
+      document.querySelector('#form-quiz .btn').innerText = "Próximo";
+      justWrap.classList.remove('hidden');
+
+      const fraseEsp = "Analise o movimento e a física.";
       if (q.texto && q.texto.trim() === fraseEsp) {
-        topInst.innerText = fraseEsp; topInst.classList.remove('hidden');
-        bottomQ.innerText = "Por quem este video foi criado?";
+        topInst.innerText = fraseEsp;
+        topInst.classList.remove('hidden');
+        bottomQ.innerText = "Por quem este vídeo foi criado?";
       } else {
-        topInst.classList.add('hidden'); bottomQ.innerText = q.texto;
+        topInst.classList.add('hidden');
+        bottomQ.innerText = q.texto || "Analise o vídeo abaixo:";
       }
 
       document.getElementById('progress-text').innerText = `Vídeo ${state.currentIdx + 1}/${state.questions.length}`;
 
-      // Renderiza Vídeo (Híbrido)
-      const mediaDiv = document.getElementById('media-wrapper');
       mediaDiv.className = (q.modo === 'comparativo') ? 'media-container dual' : 'media-container';
       mediaDiv.innerHTML = '';
 
       q.urls.forEach((url, i) => {
-        // Div container do vídeo
         const wrapper = document.createElement('div');
         wrapper.className = 'video-wrapper';
-        wrapper.onmouseenter = () => log('hover_video');
 
-        // Se for comparativo, adiciona label A/B EM CIMA do vídeo
         if (q.modo === 'comparativo') {
           const labelDiv = document.createElement('div');
           labelDiv.className = 'card-label';
           labelDiv.innerText = i === 0 ? "VÍDEO A" : "VÍDEO B";
-          // Inserimos a label ANTES do vídeo (dentro do container pai se quiser, ou fora)
-          // Aqui vou criar uma div separada para o label e vídeo
-          const container = document.createElement('div');
-          container.style.width = "100%";
-          container.appendChild(labelDiv);
-          container.appendChild(wrapper);
-          mediaDiv.appendChild(container);
-        } else {
-          mediaDiv.appendChild(wrapper);
+          mediaDiv.appendChild(labelDiv);
         }
 
-        const ytId = getYoutubeId(url);
-        if (ytId) {
+        const youtubeId = getYoutubeId(url);
+        if (youtubeId) {
           const iframe = document.createElement('iframe');
-          iframe.src = `https://www.youtube.com/embed/${ytId}?rel=0&modestbranding=1`;
+          iframe.src = `https://www.youtube.com/embed/${youtubeId}?enablejsapi=1&rel=0&autoplay=0`;
           wrapper.appendChild(iframe);
         } else {
           const video = document.createElement('video');
           video.src = url;
           video.controls = true;
-          video.style.width = "100%";
-          video.onplay = () => log('play_local');
           wrapper.appendChild(video);
         }
+        mediaDiv.appendChild(wrapper);
       });
 
-      // Opções
       const decWrap = document.getElementById('decision-options');
       let html = '';
-      if (q.modo === 'padrao') {
-        html = `<label class="radio-option">Humano <input type="radio" name="main_decision" value="humano" required></label>
-                  <label class="radio-option">IA <input type="radio" name="main_decision" value="ia"></label>`;
+      const oldFeed = document.getElementById('final-feedback-container');
+      if (oldFeed) oldFeed.remove();
+
+      if (q.modo === 'padrao' || q.modo === 'analise') {
+        justInput.required = false;
+        labelJust.innerText = "3. Justificativa (Opcional)";
+        html = `
+            <label class="radio-option">Por um Humano <input type="radio" name="main_decision" value="humano" required></label>
+            <label class="radio-option">Por uma IA <input type="radio" name="main_decision" value="ia"></label>
+          `;
       } else if (q.modo === 'comparativo') {
-        html = `<label class="radio-option">Vídeo A é IA <input type="radio" name="main_decision" value="video_a" required></label>
-                  <label class="radio-option">Vídeo B é IA <input type="radio" name="main_decision" value="video_b"></label>`;
-      } else if (q.modo === 'analise') {
-        html = `<label class="radio-option">Concordo <input type="radio" name="main_decision" value="concordo" required></label>
-                  <label class="radio-option">Discordo <input type="radio" name="main_decision" value="discordo"></label>`;
+        justInput.required = false;
+        labelJust.innerText = "3. Justificativa (Opcional)";
+        html = `
+            <label class="radio-option">Vídeo A é IA <input type="radio" name="main_decision" value="video_a" required></label>
+            <label class="radio-option">Vídeo B é IA <input type="radio" name="main_decision" value="video_b"></label>
+          `;
       } else if (q.modo === 'aberta') {
         document.querySelector('.decision-box').classList.add('hidden');
         document.querySelector('.confidence-box').classList.add('hidden');
-        document.getElementById('quiz-justificativa').required = true;
-        document.getElementById('label-justificativa').innerText = "3. Sua Análise (Obrigatório)";
+        justInput.required = true;
+        labelJust.innerText = "* 3. Sua Análise (Obrigatório)";
         html = `<input type="hidden" name="main_decision" value="texto_livre">`;
-      }
-
-      if (q.modo !== 'aberta') {
-        document.querySelector('.decision-box').classList.remove('hidden');
-        document.querySelector('.confidence-box').classList.remove('hidden');
-        document.getElementById('quiz-justificativa').required = false;
-        document.getElementById('label-justificativa').innerText = "3. Justificativa (Opcional)";
       }
       decWrap.innerHTML = html;
 
-      // Timer
-      if (state.timerInterval) clearInterval(state.timerInterval);
       state.startTime = Date.now();
       document.getElementById('quiz-timer').innerText = '00:00';
       state.timerInterval = setInterval(() => {
-        const el = Math.floor((Date.now() - state.startTime) / 1000);
-        document.getElementById('quiz-timer').innerText = `${String(Math.floor(el / 60)).padStart(2, '0')}:${String(el % 60).padStart(2, '0')}`;
+        const seconds = Math.floor((Date.now() - state.startTime) / 1000);
+        const mm = String(Math.floor(seconds / 60)).padStart(2, '0');
+        const ss = String(seconds % 60).padStart(2, '0');
+        document.getElementById('quiz-timer').innerText = `${mm}:${ss}`;
       }, 1000);
-
-      log('view_question', { id: q.item_id, modo: q.modo });
     }
 
-    // 4. ENVIO
-    document.getElementById('form-quiz').addEventListener('submit', (e) => {
+    /* --- 4. SUBMIT --- */
+    function handleQuizSubmit(e) {
       e.preventDefault();
-      const fd = new FormData(e.target);
-      const q = state.questions[state.currentIdx];
+
+      // Feedback Final
+      if (state.inFinalQuestion) {
+        const fd = new FormData(e.target);
+        const feedback = fd.get('final_feedback_text');
+        if (!feedback || !feedback.trim()) { alert("Preencha a análise final."); return; }
+
+        state.answers.push({
+          id: 0,
+          pergunta: "FEEDBACK FINAL",
+          choice: "feedback_final",
+          justificativa: feedback,
+          timeTaken: 0,
+          modo: 'final',
+          isCorrect: 0,
+          resposta_correta: "N/A",
+          confidence: "N/A"
+        });
+        finishQuiz();
+        return;
+      }
+
+      // Pergunta Normal
+      const form = e.target;
+      const fd = new FormData(form);
+      const currentQ = state.questions[state.currentIdx];
       const main = fd.get('main_decision');
-      const conf = fd.get('confidence') || 0;
-      const finalChoice = (state.questions[state.currentIdx].modo === 'aberta') ? 'texto_livre' : `${main}_confianca_${conf}`;
+      const confidence = fd.get('confidence');
+      const justification = document.getElementById('quiz-justificativa').value;
 
-      let isCorrect = false;
-      if (q.modo === 'padrao') isCorrect = (main === q.gabarito);
-      else if (q.modo === 'comparativo') isCorrect = (main === q.gabarito);
-      else isCorrect = true;
-      if (isCorrect) state.score++;
+      // VALIDAÇÃO
+      if (currentQ.modo !== 'aberta') {
+        if (!main) { alert("Selecione uma opção (Humano/IA)."); return; }
+        if (!confidence) { alert("Selecione o Nível de Confiança."); return; }
+      }
 
-      state.answers.push({ id: q.item_id, pergunta: q.texto, choice: finalChoice, isCorrect, timeTaken: (Date.now() - state.startTime) / 1000, justificativa: document.getElementById('quiz-justificativa').value });
-      state.currentIdx++;
-      if (state.currentIdx < state.questions.length) renderQuestion(); else finishQuiz();
-    });
-
-    // 5. FINAL
-    async function finishQuiz() {
       clearInterval(state.timerInterval);
-      show('screen-end');
-      document.getElementById('final-score').innerText = `${state.score} / ${state.questions.length}`;
-      try {
-        await fetch('IAHmp4salvar.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id_participante: state.id_participante, respostas: state.answers, logs: state.logs }) });
-        log('quiz_saved');
-      } catch (err) { console.error("Erro ao salvar:", err); alert("Erro ao salvar resultados."); }
+
+      // --- CORREÇÃO DO GABARITO ---
+      // O PHP manda 'gabarito' ou 'resposta_correta'. Verificamos ambos.
+      const gabaritoReal = currentQ.gabarito || currentQ.resposta_correta;
+
+      // Calcula se acertou
+      let isRight = 0;
+      if (gabaritoReal && main === gabaritoReal) {
+        isRight = 1;
+      }
+
+      state.answers.push({
+        id: currentQ.item_id,
+        pergunta: currentQ.texto || "Sem texto",
+        modo: currentQ.modo,
+        choice: main,
+        confidence: confidence || "0",
+        justificativa: justification,
+        timeTaken: Date.now() - state.startTime,
+        resposta_correta: gabaritoReal || "N/A", // Salva o gabarito usado
+        isCorrect: isRight
+      });
+
+      if (isRight === 1) state.score++;
+
+      state.currentIdx++;
+      renderQuestion();
     }
 
-    document.addEventListener("click", (e) => {
-      if (!e.target.closest('input, button, a, label')) log('click', { x: e.clientX, y: e.clientY });
+    /* --- 5. TELA FINAL --- */
+    function loadFinalFeedback() {
+      clearInterval(state.timerInterval);
+      document.getElementById('form-quiz').reset();
+
+      document.getElementById('media-wrapper').innerHTML = '';
+      document.getElementById('top-instruction').classList.add('hidden');
+      document.querySelector('.decision-box').classList.add('hidden');
+      document.querySelector('.confidence-box').classList.add('hidden');
+      document.getElementById('justificativa-wrapper').classList.add('hidden');
+      document.getElementById('decision-options').innerHTML = '';
+
+      document.getElementById('quiz-question-bottom').innerText = "Reflexão Final";
+      document.getElementById('progress-text').innerText = "Concluído";
+      document.getElementById('quiz-timer').innerText = "--:--";
+
+      const submitBtn = document.querySelector('#form-quiz .btn');
+      const feedbackHTML = `
+          <div id="final-feedback-container" class="control-box" style="width:100%; background:#fff5f5; border: 1px solid #cc0000; margin-top: 15px;">
+              <h4 style="color:#cc0000; margin-bottom:10px;">Sua Análise Final (Obrigatório)</h4>
+              <p style="margin-bottom:10px; font-size:0.9em; color:#555;">Como identificou que o video era criado por uma IA?</p>
+              <textarea name="final_feedback_text"
+                  style="width:100%; height:120px; padding:10px; border:1px solid #ffcccc; border-radius:6px; resize:vertical;"></textarea>
+          </div>
+        `;
+
+      const old = document.getElementById('final-feedback-container');
+      if (old) old.remove();
+
+      submitBtn.insertAdjacentHTML('beforebegin', feedbackHTML);
+      submitBtn.innerText = "Finalizar e Salvar";
+      state.inFinalQuestion = true;
+    }
+
+    /* --- 6. SALVAR --- */
+    async function finishQuiz() {
+      const submitBtn = document.querySelector('#form-quiz .btn');
+      submitBtn.innerText = "Salvando...";
+      submitBtn.disabled = true;
+
+      try {
+        const payload = {
+          id_participante: state.id_participante,
+          respostas: state.answers,
+          logs: state.logs
+        };
+
+        const result = await safeFetchJson('IAHmp4salvar.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (result.success) {
+          show('screen-end');
+          const scoreEl = document.getElementById('final-score');
+          if (scoreEl) scoreEl.innerText = `${state.score} / ${state.questions.length}`;
+        } else {
+          throw new Error(result.error || "Erro ao salvar.");
+        }
+
+      } catch (err) {
+        console.error(err);
+        alert("Erro ao salvar: " + err.message);
+        submitBtn.disabled = false;
+        submitBtn.innerText = "Tentar Novamente";
+      }
+    }
+
+    /* --- INICIALIZAÇÃO --- */
+    document.addEventListener("DOMContentLoaded", () => {
+      const formStart = document.getElementById('form-start');
+      if (formStart) formStart.addEventListener('submit', handleRegister);
+
+      const formQuiz = document.getElementById('form-quiz');
+      if (formQuiz) formQuiz.addEventListener('submit', handleQuizSubmit);
+
+      const selectEscolaridade = document.getElementById('reg-escolaridade');
+      const tecnicoWrapper = document.getElementById('tecnico-field-wrapper');
+
+      if (selectEscolaridade) {
+        selectEscolaridade.addEventListener('change', (e) => {
+          const isTecnico = e.target.value === 'MedioTecnico';
+          if (tecnicoWrapper) {
+            isTecnico ? tecnicoWrapper.classList.remove('hidden') : tecnicoWrapper.classList.add('hidden');
+          }
+          const inputTec = document.getElementById('curso_tecnico');
+          if (inputTec) {
+            inputTec.required = isTecnico;
+            if (!isTecnico) inputTec.value = "";
+          }
+        });
+      }
     });
   </script>
 </body>
